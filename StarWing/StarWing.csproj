@@ -6,4 +6,8 @@
         <RootNamespace>StarWing.Framework</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACECOREAPP;DEBUG</DefineConstants>
+    </PropertyGroup>
+
 </Project>

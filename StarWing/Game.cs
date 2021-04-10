@@ -43,17 +43,18 @@ namespace StarWing.Framework
             MainWindow = new GameWindow();
             MainWindow.Size = new Size(820, 620);
             MainWindow.Paint += RenderFrame;
+            MainWindow.HandleCreated += (sender, args) => MainLoopThread.Start();
+            MainWindow.Disposed += (sender, args) => IsRunning = false;
         }
 
         public void Start()
         {
-            // OnLoad();
+            OnLoad();
 
             IsRunning = true;
 
-            MainLoopThread.Start();
-
             // Run game window
+            // Main loop will start to run after it created
             Application.Run(MainWindow);
         }
 
@@ -78,10 +79,12 @@ namespace StarWing.Framework
                 while (!renderResult.IsCompleted)
                 { /* Wait */ }
 
+                #if DEBUG
+
                 // Update FPS counter
                 if (gameTime.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
-                    MainWindow.Text = $"FPS: {fps}";
+                    Console.WriteLine($"FPS: {fps}");
                     previousCheckTime = gameTime.TotalTime;
                     fps = 0;
                 }
@@ -89,6 +92,8 @@ namespace StarWing.Framework
                 {
                     fps++;
                 }
+
+                #endif
             }
         }
 
@@ -106,8 +111,6 @@ namespace StarWing.Framework
 
             // Set game state to ended
             IsRunning = false;
-
-            MainWindow.BeginInvoke(( MethodInvoker ) ( () => MainWindow.Close() ));
 
             // End main game loop
             // MainLoopThread.Join();

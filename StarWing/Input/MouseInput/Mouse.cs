@@ -18,6 +18,7 @@ namespace StarWing.Framework.Input
             form.MouseDown += UpdateOnMouseDown;
             form.MouseMove += UpdateMousePosition;
             form.MouseUp += UpdateOnMouseUp;
+
             Position = Point.Empty;
             _pressed = (int) MouseButtons.None;
         }

@@ -21,7 +21,13 @@ namespace Examples
         protected override void Update(IGameTime gameTime)
         {
             var keyboard = Keyboard.Status;
+            var mouse = Mouse.Status;
             var velocity = Vector2D.Zero;
+            if (mouse.IsButtonPressed(MouseButtons.Left))
+            {
+                _position = mouse.Position;
+                return;
+            }
             if (keyboard.IsKeyDown(Keys.Down))
             {
                 velocity += Vector2D.Down;
@@ -45,7 +51,7 @@ namespace Examples
 
         protected override void Render(Graphics graphics)
         {
-            graphics.DrawRectangle(Pens.Red, _position.X, _position.Y, _rectangle.Width, _rectangle.Height);
+            graphics.FillRectangle(Brushes.Red, new RectangleF(_position.X,_position.Y, _rectangle.Width, _rectangle.Height));
         }
     }
 }

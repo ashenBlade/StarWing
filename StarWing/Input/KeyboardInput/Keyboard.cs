@@ -10,27 +10,27 @@ namespace StarWing.Framework.Input
         // Keys are being currently pressed
         private readonly HashSet<Keys> _beingPressed;
 
+        public KeyboardStatus Status =>
+            new KeyboardStatus(_beingPressed);
+
         /// <param name="form">Form to listen input from</param>
         public Keyboard(Form form)
         {
             _beingPressed = new HashSet<Keys>();
 
-            form.KeyDown += UpdateOnKeyDown;
-            form.KeyUp += UpdateOnKeyUp;
+            form.KeyDown += (sender, args) => UpdateOnKeyDown(form, args);
+            form.KeyUp += (sender, args) =>  UpdateOnKeyUp(form, args);
         }
 
-        public KeyboardStatus Status =>
-            new KeyboardStatus(_beingPressed);
-
-        private void UpdateOnKeyUp(object sender, KeyEventArgs args)
+        private void UpdateOnKeyUp(Form form, KeyEventArgs args)
         {
             var key = args.KeyCode;
-            _beingPressed.Remove(key);
+            form.BeginInvoke(( MethodInvoker ) ( () => _beingPressed.Remove(key) ));
         }
-        private void UpdateOnKeyDown(object sender, KeyEventArgs args)
+        private void UpdateOnKeyDown(Form form, KeyEventArgs args)
         {
             var key = args.KeyCode;
-            _beingPressed.Add(key);
+            form.BeginInvoke(( MethodInvoker ) ( () => _beingPressed.Add(key) ));
         }
     }
 }
