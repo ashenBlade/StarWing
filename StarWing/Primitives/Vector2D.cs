@@ -61,6 +61,17 @@ namespace StarWing.Framework.Primitives
             return new Vector2D(vector2D.X * multiplier, vector2D.Y * multiplier);
         }
 
+        public static bool operator ==(Vector2D first, Vector2D second)
+        {
+            return Math.Abs(first.X - second.X) < 0.01f &&
+                   Math.Abs(first.Y - second.Y) < 0.01f;
+        }
+
+        public static bool operator !=(Vector2D first, Vector2D second)
+        {
+            return !( first == second );
+        }
+
         #region Cast operators
 
         public static implicit operator Vector2D(Point point)
