@@ -8,7 +8,7 @@ namespace StarWing.Framework.Input
     public class Keyboard : IKeyboard
     {
         // Keys are being currently pressed
-        private readonly HashSet<Keys> _pressed;
+        private readonly HashSet<Keys> _pressed = new HashSet<Keys>();
 
         public KeyboardStatus Status =>
             new KeyboardStatus(_pressed);
@@ -16,8 +16,11 @@ namespace StarWing.Framework.Input
         /// <param name="form">Form to listen input from</param>
         public Keyboard(Form form)
         {
-            _pressed = new HashSet<Keys>();
+            SubscribeToForm(form);
+        }
 
+        private void SubscribeToForm(Form form)
+        {
             form.KeyDown += UpdateOnKeyDown;
             form.KeyUp += UpdateOnKeyUp;
         }
