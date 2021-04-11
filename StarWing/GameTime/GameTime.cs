@@ -16,9 +16,12 @@ namespace StarWing.Framework
         public GameTime()
         {
             _elapsedTime = new Stopwatch();
-            _elapsedTime.Start();
+            _totalTime = TimeSpan.Zero;
+        }
 
-            _totalTime = _elapsedTime.Elapsed;
+        public void Start()
+        {
+            _elapsedTime.Start();
         }
 
         public void Update()
