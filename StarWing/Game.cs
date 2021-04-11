@@ -61,29 +61,29 @@ namespace StarWing.Framework
 
         private void RunMainLoop()
         {
-            var gameTime = new GameTime();
+            var timer = new GameTimer();
             var fps = 0; // FPS Counter
             var previousCheckTime = TimeSpan.Zero;
-            gameTime.Start();
+            timer.Start();
             while (IsRunning)
             {
                 Application.DoEvents();
 
-                // Update game time
-                gameTime.Update();
-
                 // Update game logic
-                Update(gameTime);
+                Update(timer.GetTime());
+
+                // Update game time
+                timer.Update();
 
                 // Render frame
                 MainWindow.Refresh();
 
 #if DEBUG
                 // Update FPS counter
-                if (gameTime.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
+                if (timer.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
                     MainWindow.Text = $"FPS: {fps}";
-                    previousCheckTime = gameTime.TotalTime;
+                    previousCheckTime = timer.TotalTime;
                     fps = 0;
                 }
                 else

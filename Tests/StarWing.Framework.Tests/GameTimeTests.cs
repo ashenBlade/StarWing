@@ -21,7 +21,7 @@ namespace Tests.StarWing.Framework.Tests
         [Test]
         public void CanMeasureTime()
         {
-            var gameTime = new GameTime();
+            var gameTime = new GameTimer();
             gameTime.Start();
             var sleepTimeout = TimeSpan.FromMilliseconds(10);
             Thread.Sleep(sleepTimeout);
@@ -32,7 +32,7 @@ namespace Tests.StarWing.Framework.Tests
         [Test]
         public void CanGetTimeSinceLastUpdate()
         {
-            var gameTime = new GameTime();
+            var gameTime = new GameTimer();
             gameTime.Start();
             var sleepTimeout = TimeSpan.FromMilliseconds(10);
             Thread.Sleep(sleepTimeout);
@@ -43,7 +43,7 @@ namespace Tests.StarWing.Framework.Tests
         [Test]
         public void TimeSinceLastUpdate_ResetsAfterUpdateMethodCall()
         {
-            var gameTime = new GameTime();
+            var gameTime = new GameTimer();
             gameTime.Start();
             var sleepTimeout = TimeSpan.FromMilliseconds(10);
             Thread.Sleep(sleepTimeout);
@@ -55,7 +55,7 @@ namespace Tests.StarWing.Framework.Tests
         [Test]
         public void TimespanIsEqualToZeroBeforeStart()
         {
-            var gameTime = new GameTime();
+            var gameTime = new GameTimer();
             Assert.That(gameTime.SinceLastUpdate, Is.EqualTo(TimeSpan.Zero));
             Assert.That(gameTime.TotalTime, Is.EqualTo(TimeSpan.Zero));
         }
