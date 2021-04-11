@@ -23,6 +23,10 @@ namespace StarWing.Framework
         {
             InitializeMainWindow();
             InitializeInputDevices();
+
+#if DEBUG
+            Log.RegisterOutput(Console.Out);
+#endif
         }
 
         private void InitializeMainWindow()
@@ -41,6 +45,7 @@ namespace StarWing.Framework
 
         public void Run()
         {
+            Log.Debug("Starting the game");
             Application.Run(MainWindow);
         }
 
@@ -73,13 +78,11 @@ namespace StarWing.Framework
                 // Render frame
                 MainWindow.Refresh();
 
-                #if DEBUG
-
+#if DEBUG
                 // Update FPS counter
                 if (gameTime.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
-                    Console.Clear();
-                    Console.WriteLine($"FPS: {fps}");
+                    MainWindow.Text = $"FPS: {fps}";
                     previousCheckTime = gameTime.TotalTime;
                     fps = 0;
                 }
@@ -87,8 +90,7 @@ namespace StarWing.Framework
                 {
                     fps++;
                 }
-
-                #endif
+#endif
             }
         }
 
