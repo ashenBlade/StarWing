@@ -78,6 +78,7 @@ namespace StarWing.Framework
                 // Update FPS counter
                 if (gameTime.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
+                    Console.Clear();
                     Console.WriteLine($"FPS: {fps}");
                     previousCheckTime = gameTime.TotalTime;
                     fps = 0;
