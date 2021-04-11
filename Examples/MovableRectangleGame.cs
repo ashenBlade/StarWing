@@ -8,25 +8,35 @@ namespace Examples
 {
     public class MovableRectangleGame : Game
     {
-        private Vector2D _position;
+        private Vector2D _rectanglePosition;
         private Rectangle _rectangle;
+        private Vector2D _mousePosition;
         public MovableRectangleGame() { }
 
         protected override void OnLoad()
         {
-            _position = Vector2D.Zero;
-            _rectangle = new Rectangle(_position, new Size(100, 100));
+            _rectanglePosition = Vector2D.Zero;
+            _mousePosition = Vector2D.Zero;
+            _rectangle = new Rectangle(_rectanglePosition, new Size(100, 100));
         }
 
         protected override void Update(IGameTime gameTime)
         {
-            var keyboard = Keyboard.Status;
+            // Mouse input example
             var mouse = Mouse.Status;
-            var velocity = Vector2D.Zero;
+            _mousePosition = mouse.Position;
             if (mouse.IsButtonPressed(MouseButtons.Left))
             {
-                _position = mouse.Position;
+                _rectanglePosition = mouse.Position;
                 return;
+            }
+
+            // Keyboard input example
+            var keyboard = Keyboard.Status;
+            var velocity = Vector2D.Zero;
+            if (keyboard.IsKeyDown(Keys.Escape))
+            {
+                Exit();
             }
             if (keyboard.IsKeyDown(Keys.Down))
             {
@@ -46,12 +56,18 @@ namespace Examples
                 velocity += Vector2D.Right;
             }
 
-            _position += velocity;
+            _rectanglePosition += velocity;
         }
 
         protected override void Render(Graphics graphics)
         {
-            graphics.FillRectangle(Brushes.Red, new RectangleF(_position.X,_position.Y, _rectangle.Width, _rectangle.Height));
+            // Draw rectangle
+            graphics.FillRectangle(Brushes.Red, new RectangleF(_rectanglePosition.X,_rectanglePosition.Y, _rectangle.Width, _rectangle.Height));
+
+            // Show mouse position
+            var font = new Font(FontFamily.GenericMonospace, 12);
+            var textPosition = new Vector2D(100, 100);
+            graphics.DrawString($"Mouse position: X: {_mousePosition.X} Y: {_mousePosition.Y}", font, Brushes.Black, textPosition);
         }
     }
 }
