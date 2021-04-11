@@ -16,6 +16,12 @@ namespace StarWing.Framework.Input
         /// <param name="form">Form to listen input from</param>
         public Keyboard(Form form)
         {
+            if (form == null)
+            {
+                var exception = new ArgumentNullException(nameof(form));
+                Log.Error("Form argument is null", exception);
+                throw exception;
+            }
             SubscribeToForm(form);
         }
 

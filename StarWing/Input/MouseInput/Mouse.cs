@@ -16,6 +16,13 @@ namespace StarWing.Framework.Input
         /// <param name="form">Form to listen input from</param>
         public Mouse(Form form)
         {
+            if (form == null)
+            {
+                var exception = new ArgumentNullException(nameof(form));
+                Log.Error("Form in mouse class was null", exception);
+                throw exception;
+            }
+
             form.MouseDown += UpdateOnMouseDown;
             form.MouseMove += UpdateMousePosition;
             form.MouseUp += UpdateOnMouseUp;
