@@ -75,6 +75,22 @@ namespace StarWing.Framework.Primitives
             return !( first == second );
         }
 
+        public bool Equals(Vector2D other)
+        {
+            return X.Equals(other.X)
+                && Y.Equals(other.Y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vector2D other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+
         #region Cast operators
 
         public static implicit operator Vector2D(Point point)
