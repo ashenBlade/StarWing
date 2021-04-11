@@ -11,11 +11,11 @@ namespace StarWing.Framework
     {
         protected bool IsRunning { get; private set; }
         private GameWindow MainWindow { get; set; }
-        private Keyboard _keyboard { get; set; }
+        private Keyboard _keyboard;
         protected IKeyboard Keyboard =>
             _keyboard;
 
-        private Mouse _mouse { get; set; }
+        private Mouse _mouse;
         protected IMouse Mouse =>
             _mouse;
 
@@ -28,7 +28,7 @@ namespace StarWing.Framework
         private void InitializeMainWindow()
         {
             MainWindow = new GameWindow(this);
-            MainWindow.Size = new Size(820, 620);
+            MainWindow.Size = new Size(1280, 720);
             MainWindow.Paint += RenderFrame;
             MainWindow.Closed += (sender, args) => Exit();
         }
@@ -41,7 +41,6 @@ namespace StarWing.Framework
 
         public void Run()
         {
-            Application.EnableVisualStyles();
             Application.Run(MainWindow);
         }
 
@@ -59,7 +58,8 @@ namespace StarWing.Framework
         {
             var gameTime = new GameTime();
             var fps = 0; // FPS Counter
-            var previousCheckTime = gameTime.TotalTime;
+            var previousCheckTime = TimeSpan.Zero;
+            gameTime.Start();
             while (IsRunning)
             {
                 Application.DoEvents();
