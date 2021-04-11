@@ -3,41 +3,40 @@ using System.Diagnostics; // FPS Counter time
 
 namespace StarWing.Framework
 {
-    // TODO:
     public class GameTime : IGameTime
     {
         private Stopwatch _elapsedTime;
-        private Stopwatch _totalTime;
+        private TimeSpan _totalTime;
         public TimeSpan SinceLastUpdate =>
             _elapsedTime.Elapsed;
 
         public TimeSpan TotalTime =>
-            _totalTime.Elapsed;
+            _elapsedTime.Elapsed + _totalTime;
 
         public GameTime()
         {
             _elapsedTime = new Stopwatch();
             _elapsedTime.Start();
 
-            _totalTime = new Stopwatch();
-            _totalTime.Start();
+            _totalTime = _elapsedTime.Elapsed;
         }
 
         public void Update()
         {
+            _totalTime += _elapsedTime.Elapsed;
             _elapsedTime.Restart();
         }
 
         public void Reset()
         {
             _elapsedTime.Reset();
-            _totalTime.Reset();
+            _totalTime = TimeSpan.Zero;
         }
 
         public void Restart()
         {
             _elapsedTime.Restart();
-            _totalTime.Restart();
+            _totalTime = TimeSpan.Zero;
         }
     }
 }
