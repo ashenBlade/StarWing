@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -10,7 +11,6 @@ namespace StarWing.Framework
     {
         protected bool IsRunning { get; private set; }
         private GameWindow MainWindow { get; set; }
-        private Thread MainLoopThread { get; set; }
         private Keyboard _keyboard { get; set; }
         protected IKeyboard Keyboard =>
             _keyboard;
@@ -23,13 +23,14 @@ namespace StarWing.Framework
         {
             InitializeMainWindow();
             InitializeInputDevices();
-            InitializeMainLoopThread();
         }
 
-        private void InitializeMainLoopThread()
+        private void InitializeMainWindow()
         {
-            MainLoopThread = new Thread(o => MainLoop());
-            MainLoopThread.IsBackground = true;
+            MainWindow = new GameWindow(this);
+            MainWindow.Size = new Size(820, 620);
+            MainWindow.Paint += RenderFrame;
+            MainWindow.Closed += (sender, args) => Exit();
         }
 
         private void InitializeInputDevices()
@@ -38,36 +39,31 @@ namespace StarWing.Framework
             _mouse = new Mouse(MainWindow);
         }
 
-        private void InitializeMainWindow()
+        public void Run()
         {
-            MainWindow = new GameWindow();
-            MainWindow.Size = new Size(820, 620);
-            MainWindow.Paint += RenderFrame;
-            MainWindow.HandleCreated += (sender, args) => MainLoopThread.Start();
-            MainWindow.Disposed += (sender, args) => IsRunning = false;
+            Application.EnableVisualStyles();
+            Application.Run(MainWindow);
         }
 
-        public void Start()
+        internal void Start()
         {
             OnLoad();
 
             IsRunning = true;
 
-            // Run game window
-            // Main loop will start to run after it created
-            Application.Run(MainWindow);
+            RunMainLoop();
         }
 
 
-        private void MainLoop()
+        private void RunMainLoop()
         {
-            OnLoad();
-
             var gameTime = new GameTime();
             var fps = 0; // FPS Counter
             var previousCheckTime = gameTime.TotalTime;
             while (IsRunning)
             {
+                Application.DoEvents();
+
                 // Update game time
                 gameTime.Update();
 
@@ -75,9 +71,7 @@ namespace StarWing.Framework
                 Update(gameTime);
 
                 // Render frame
-                var renderResult = MainWindow.BeginInvoke((MethodInvoker)(() => MainWindow.Refresh()));
-                while (!renderResult.IsCompleted)
-                { /* Wait */ }
+                MainWindow.Refresh();
 
                 #if DEBUG
 
@@ -112,17 +106,16 @@ namespace StarWing.Framework
             // Set game state to ended
             IsRunning = false;
 
-            // End main game loop
-            // MainLoopThread.Join();
+            Application.Exit();
         }
 
-        protected virtual void OnExit()
+        protected internal virtual void OnExit()
         { }
-        protected virtual void OnLoad()
+        protected internal virtual void OnLoad()
         { }
-        protected virtual void Update(IGameTime gameTime)
+        protected internal virtual void Update(IGameTime gameTime)
         { }
-        protected virtual void Render(Graphics graphics)
+        protected internal virtual void Render(Graphics graphics)
         { }
     }
 }

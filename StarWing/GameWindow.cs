@@ -7,13 +7,14 @@ using Microsoft.VisualBasic.Devices;
 
 namespace StarWing.Framework
 {
-    public class GameWindow : Form
+    internal class GameWindow : Form
     {
-        public GameWindow()
+        public GameWindow(Game game)
         {
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             UseWaitCursor = false;
+            Shown += (sender, args) => game.Start();
         }
     }
 }
