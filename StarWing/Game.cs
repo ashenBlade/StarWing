@@ -45,16 +45,15 @@ namespace StarWing.Framework
 
         public void Run()
         {
-            Log.Debug("Starting the game");
             Application.Run(MainWindow);
         }
 
         internal void Start()
         {
+            Log.Info("Game is starting");
+
             OnLoad();
-
             IsRunning = true;
-
             RunMainLoop();
         }
 
@@ -108,6 +107,8 @@ namespace StarWing.Framework
 
             // Set game state to ended
             IsRunning = false;
+
+            Log.Info("Game is exiting");
 
             Application.Exit();
         }
