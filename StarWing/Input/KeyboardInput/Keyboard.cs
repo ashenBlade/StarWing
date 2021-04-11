@@ -8,29 +8,29 @@ namespace StarWing.Framework.Input
     public class Keyboard : IKeyboard
     {
         // Keys are being currently pressed
-        private readonly HashSet<Keys> _beingPressed;
+        private readonly HashSet<Keys> _pressed;
 
         public KeyboardStatus Status =>
-            new KeyboardStatus(_beingPressed);
+            new KeyboardStatus(_pressed);
 
         /// <param name="form">Form to listen input from</param>
         public Keyboard(Form form)
         {
-            _beingPressed = new HashSet<Keys>();
+            _pressed = new HashSet<Keys>();
 
-            form.KeyDown += (sender, args) => UpdateOnKeyDown(form, args);
-            form.KeyUp += (sender, args) =>  UpdateOnKeyUp(form, args);
+            form.KeyDown += UpdateOnKeyDown;
+            form.KeyUp += UpdateOnKeyUp;
         }
 
-        private void UpdateOnKeyUp(Form form, KeyEventArgs args)
+        private void UpdateOnKeyUp(object? sender, KeyEventArgs args)
         {
             var key = args.KeyCode;
-            form.BeginInvoke(( MethodInvoker ) ( () => _beingPressed.Remove(key) ));
+            _pressed.Remove(key);
         }
-        private void UpdateOnKeyDown(Form form, KeyEventArgs args)
+        private void UpdateOnKeyDown(object? sender, KeyEventArgs args)
         {
             var key = args.KeyCode;
-            form.BeginInvoke(( MethodInvoker ) ( () => _beingPressed.Add(key) ));
+            _pressed.Add(key);
         }
     }
 }
