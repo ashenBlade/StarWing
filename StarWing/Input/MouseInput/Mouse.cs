@@ -13,6 +13,7 @@ namespace StarWing.Framework.Input
         public MouseStatus Status =>
             new MouseStatus(Position, _pressed);
 
+        /// <param name="form">Form to listen input from</param>
         public Mouse(Form form)
         {
             form.MouseDown += UpdateOnMouseDown;
