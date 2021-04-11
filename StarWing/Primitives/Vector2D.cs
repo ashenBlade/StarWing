@@ -29,6 +29,9 @@ namespace StarWing.Framework.Primitives
             _length = -1;
         }
 
+        public Vector2D Normalize() =>
+            new Vector2D(X / Length, Y / Length) { _length = 1.0f };
+
         #region Direction vectors
 
         public static readonly Vector2D Zero = new Vector2D(0, 0) { _length = 0 };
