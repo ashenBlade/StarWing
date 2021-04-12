@@ -10,12 +10,13 @@ namespace StarWing.Framework.Input
 {
     public readonly struct KeyboardStatus
     {
-        private readonly HashSet<Keys> _pressed;
+        private readonly List<Keys> _pressed;
+        private readonly Keys _justPressed;
 
-        /// <param name="keys">Keys that are being pressed currently</param>
-        public KeyboardStatus(HashSet<Keys> keys)
+        public KeyboardStatus(List<Keys> pressed, Keys justPressed)
         {
-            _pressed = keys;
+            _justPressed = justPressed;
+            _pressed = pressed;
         }
 
         public bool Shift =>
@@ -36,5 +37,16 @@ namespace StarWing.Framework.Input
         {
             return !IsKeyDown(key);
         }
+
+        public bool IsKeyJustPressed(Keys key)
+        {
+            return key == _justPressed;
+        }
+
+        public Keys JustPressed =>
+            _justPressed;
+
+        public Keys[] Pressed =>
+            _pressed.ToArray();
     }
 }

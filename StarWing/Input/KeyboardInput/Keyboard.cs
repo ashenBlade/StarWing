@@ -7,11 +7,17 @@ namespace StarWing.Framework.Input
 {
     public class Keyboard : IKeyboard
     {
-        // Keys are being currently pressed
-        private readonly HashSet<Keys> _pressed = new HashSet<Keys>();
+        private readonly List<Keys> _pressed = new();
+        private Keys _toAdd = Keys.None;
 
-        public KeyboardStatus Status =>
-            new KeyboardStatus(_pressed);
+        public KeyboardStatus Status {
+            get
+            {
+                var key = _toAdd;
+                _toAdd = Keys.None;
+                return new KeyboardStatus(_pressed, key);
+            }
+        }
 
         /// <param name="form">Form to listen input from</param>
         public Keyboard(Form form)
@@ -19,7 +25,7 @@ namespace StarWing.Framework.Input
             if (form == null)
             {
                 var exception = new ArgumentNullException(nameof(form));
-                Log.Error("Form argument is null", exception);
+                Log.Error("Form argument in keyboard class is null", exception);
                 throw exception;
             }
             SubscribeToForm(form);
@@ -31,15 +37,23 @@ namespace StarWing.Framework.Input
             form.KeyUp += UpdateOnKeyUp;
         }
 
+        private void UpdateOnKeyDown(object? sender, KeyEventArgs args)
+        {
+            var key = args.KeyCode;
+            if (!_pressed.Contains(key))
+            {
+                _toAdd = key;
+                _pressed.Add(_toAdd);
+            }
+            else
+            {
+                _toAdd = Keys.None;
+            }
+        }
         private void UpdateOnKeyUp(object? sender, KeyEventArgs args)
         {
             var key = args.KeyCode;
             _pressed.Remove(key);
-        }
-        private void UpdateOnKeyDown(object? sender, KeyEventArgs args)
-        {
-            var key = args.KeyCode;
-            _pressed.Add(key);
         }
     }
 }
