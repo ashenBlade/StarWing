@@ -6,7 +6,7 @@ namespace Examples
     {
         static void Main(string[] args)
         {
-            var game = new MovableRectangleGame();
+            var game = new InputGame();
             game.Run();
         }
     }
