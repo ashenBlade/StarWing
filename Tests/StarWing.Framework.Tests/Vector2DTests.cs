@@ -54,5 +54,17 @@ namespace Tests.StarWing.Framework.Tests
             var expected = new Vector2D(xExpected, yExpected);
             Assert.AreEqual(expected, actual);
         }
+
+        [TestCase(1.0f, 1.0f, 10.0f, 10.0f, 10.0f)]
+        [TestCase(-1.0f, 1.0f, 10.0f, -10.0f, 10.0f)]
+        [TestCase(-1.0f, 0.5f, 5.0f, -5.0f, 2.5f)]
+        [TestCase(-1.0f, 0.5f, 0.0f, 0.0f, 0.0f)]
+        public void CanMultiplyVectors(float xFirst, float yFirst, float multiplier, float xExpected, float yExpected)
+        {
+            var vector = new Vector2D(xFirst, yFirst);
+            var expected = new Vector2D(xExpected, yExpected);
+            var actual = vector * multiplier;
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }
