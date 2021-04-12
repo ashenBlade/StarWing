@@ -7,6 +7,7 @@ namespace StarWing.Framework.Input
 {
     public class Keyboard : IKeyboard
     {
+        // It would be better to store it in integers
         private readonly List<Keys> _pressed = new();
         private Keys _toAdd = Keys.None;
 

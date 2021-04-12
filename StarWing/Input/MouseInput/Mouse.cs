@@ -8,6 +8,7 @@ namespace StarWing.Framework.Input
 {
     public class Mouse : IMouse
     {
+        // Better to store it in integer
         private List<MouseButtons> _pressed;
         private MouseButtons _justPressed;
         public Point Position { get; private set; }
