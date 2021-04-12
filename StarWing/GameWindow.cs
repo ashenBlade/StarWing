@@ -1,20 +1,27 @@
-﻿using System.Drawing.Design;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using StarWing.Framework.Primitives;
-using Microsoft.VisualBasic.Devices;
 
 namespace StarWing.Framework
 {
-    internal class GameWindow : Form
+    internal class Window : Form, IGameWindow
     {
-        public GameWindow(Game game)
+        public Window()
         {
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             UseWaitCursor = false;
-            Shown += (sender, args) => game.Start();
         }
+
+
+        public Point Position =>
+            this.Location;
+
+        public string Title =>
+            Text;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Windows.Forms;
 using StarWing.Framework.Input;
@@ -10,50 +11,55 @@ namespace StarWing.Framework
     public abstract class Game
     {
         protected bool IsRunning { get; private set; }
-        private GameWindow MainWindow { get; set; }
-        private Keyboard _keyboard;
-        protected IKeyboard Keyboard =>
-            _keyboard;
 
-        private Mouse _mouse;
-        protected IMouse Mouse =>
-            _mouse;
+        protected IGameWindow GameWindow =>
+            _gameWindow;
+        private Window _gameWindow { get; set; }
+        protected IKeyboard Keyboard { get; private set; }
+        protected IMouse Mouse { get; private set; }
+
+        public event EventHandler<EventArgs> Starting;
+        public event EventHandler<EventArgs> Exiting;
 
         protected Game()
         {
-            InitializeMainWindow();
-            InitializeInputDevices();
+            InitializeGameWindow();
+            InitializeInputDevices(_gameWindow);
 
 #if DEBUG
             Log.RegisterOutput(Console.Out);
 #endif
         }
 
-        private void InitializeMainWindow()
+        private void InitializeGameWindow()
         {
-            MainWindow = new GameWindow(this);
-            MainWindow.Size = new Size(1280, 720);
-            MainWindow.Paint += RenderFrame;
-            MainWindow.Closed += (sender, args) => Exit();
+            _gameWindow = new Window();
+            _gameWindow.Size = new Size(1280, 720);
+            _gameWindow.Shown += (sender, args) => Start();
+            _gameWindow.Paint += (sender, args) => RenderFrame(args);
+            _gameWindow.Closed += (sender, args) => Exit();
         }
 
-        private void InitializeInputDevices()
+        private void InitializeInputDevices(Form form)
         {
-            _keyboard = new Keyboard(MainWindow);
-            _mouse = new Mouse(MainWindow);
+            Keyboard = new Keyboard(form);
+            Mouse = new Mouse(form);
         }
 
         public void Run()
         {
-            Application.Run(MainWindow);
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+            Application.Run(_gameWindow);
         }
 
-        internal void Start()
+        private void Start()
         {
             Log.Info("Game is starting");
 
             OnLoad();
+
             IsRunning = true;
+
             RunMainLoop();
         }
 
@@ -75,13 +81,13 @@ namespace StarWing.Framework
                 timer.Update();
 
                 // Render frame
-                MainWindow.Refresh();
+                _gameWindow.Refresh();
 
 #if DEBUG
                 // Update FPS counter
                 if (timer.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
-                    MainWindow.Text = $"FPS: {fps}";
+                    _gameWindow.Text = $"FPS: {fps}";
                     previousCheckTime = timer.TotalTime;
                     fps = 0;
                 }
@@ -93,7 +99,7 @@ namespace StarWing.Framework
             }
         }
 
-        private void RenderFrame(object sender, PaintEventArgs e)
+        private void RenderFrame(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Turquoise);
             Render(e.Graphics);
@@ -113,6 +119,7 @@ namespace StarWing.Framework
             Application.Exit();
         }
 
+
         protected internal virtual void OnExit()
         { }
         protected internal virtual void OnLoad()
@@ -121,5 +128,18 @@ namespace StarWing.Framework
         { }
         protected internal virtual void Render(Graphics graphics)
         { }
+        private void OnUnhandledException (object sender, UnhandledExceptionEventArgs e)
+        {
+            Log.Error("Something went wrong", new Exception(e.ToString()));
+        }
+        protected virtual void OnStarting()
+        {
+            Starting?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnExiting()
+        {
+            Exiting?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
