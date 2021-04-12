@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using StarWing.Framework.Primitives;
@@ -7,11 +8,19 @@ namespace StarWing.Framework.Input
 {
     public class Mouse : IMouse
     {
-        private int _pressed;
+        private List<MouseButtons> _pressed;
+        private MouseButtons _justPressed;
         public Point Position { get; private set; }
 
-        public MouseStatus Status =>
-            new MouseStatus(Position, _pressed);
+        public MouseStatus Status
+        {
+            get
+            {
+                var justPressed = _justPressed;
+                _justPressed = (int) MouseButtons.None;
+                return new MouseStatus(Position, _pressed, justPressed);
+            }
+        }
 
         /// <param name="form">Form to listen input from</param>
         public Mouse(Form form)
@@ -27,8 +36,9 @@ namespace StarWing.Framework.Input
             form.MouseMove += UpdateMousePosition;
             form.MouseUp += UpdateOnMouseUp;
 
-            Position = Point.Empty;
-            _pressed = (int) MouseButtons.None;
+            _justPressed = new();
+            _pressed = new();
+            Position = Vector2D.Zero;
         }
 
         private void UpdateMousePosition(object? sender, MouseEventArgs e)
@@ -39,13 +49,24 @@ namespace StarWing.Framework.Input
         private void UpdateOnMouseDown(object? sender, MouseEventArgs e)
         {
             UpdateMousePosition(sender, e);
-            _pressed += ( int ) e.Button;
+            var button = e.Button;
+
+            // Pressed first time
+            if (!_pressed.Contains(button))
+            {
+                _justPressed = button;
+                _pressed.Add(button);
+            }
+            else
+            {
+                _justPressed = MouseButtons.None;
+            }
         }
 
         private void UpdateOnMouseUp(object? sender, MouseEventArgs e)
         {
             UpdateMousePosition(sender, e);
-            _pressed -= (int) e.Button;
+            _pressed.Remove(e.Button);
         }
     }
 }
