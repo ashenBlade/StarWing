@@ -12,14 +12,12 @@ namespace StarWing.Framework
     {
         protected bool IsRunning { get; private set; }
 
+        private Window _gameWindow { get; set; }
         protected IGameWindow GameWindow =>
             _gameWindow;
-        private Window _gameWindow { get; set; }
         protected IKeyboard Keyboard { get; private set; }
         protected IMouse Mouse { get; private set; }
 
-        public event EventHandler<EventArgs> Starting;
-        public event EventHandler<EventArgs> Exiting;
 
         protected Game()
         {
@@ -141,5 +139,12 @@ namespace StarWing.Framework
         {
             Exiting?.Invoke(this, EventArgs.Empty);
         }
+
+        #region Events
+
+        public event EventHandler<EventArgs> Starting;
+        public event EventHandler<EventArgs> Exiting;
+
+        #endregion
     }
 }
