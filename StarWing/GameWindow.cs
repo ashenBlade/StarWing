@@ -6,10 +6,11 @@ using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using StarWing.Framework.Input;
 using StarWing.Framework.Primitives;
+using ScrollEventArgs = StarWing.Framework.Input.ScrollEventArgs;
 
 namespace StarWing.Framework
 {
-    internal class Window : Form, IGameWindow, IPressableManipulator<MouseEventArgs>, IPressableManipulator<KeyEventArgs>, IMovableManipulator<MouseEventArgs>
+    internal class Window : Form, IGameWindow, IKeyboardManipulator, IMouseManipulator
     {
         public Window()
         {
@@ -53,6 +54,12 @@ namespace StarWing.Framework
         {
             add => MouseMove += new MouseEventHandler(value);
             remove => MouseMove -= new MouseEventHandler(value);
+        }
+
+        public new event EventHandler<ScrollEventArgs> Scroll
+        {
+            add => MouseWheel += value.ToMouseEventHandler();
+            remove => MouseWheel -= value.ToMouseEventHandler();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace StarWing.Framework
         private void InitializeInputDevices()
         {
             Keyboard = new Keyboard(_gameWindow);
-            Mouse = new Mouse(_gameWindow, _gameWindow);
+            Mouse = new Mouse(_gameWindow);
         }
 
         public void Run()
