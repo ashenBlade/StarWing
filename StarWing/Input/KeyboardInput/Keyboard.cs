@@ -21,7 +21,7 @@ namespace StarWing.Framework.Input
         }
 
         /// <param name="form">Form to listen input from</param>
-        public Keyboard(Form form)
+        public Keyboard(IPressableManipulator<KeyEventArgs> form)
         {
             if (form == null)
             {
@@ -32,7 +32,7 @@ namespace StarWing.Framework.Input
             SubscribeToForm(form);
         }
 
-        private void SubscribeToForm(Form form)
+        private void SubscribeToForm(IPressableManipulator<KeyEventArgs> form)
         {
             form.KeyDown += UpdateOnKeyDown;
             form.KeyUp += UpdateOnKeyUp;

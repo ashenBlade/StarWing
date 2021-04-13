@@ -24,7 +24,7 @@ namespace StarWing.Framework
         protected Game()
         {
             InitializeGameWindow();
-            InitializeInputDevices(_gameWindow);
+            InitializeInputDevices();
 
 #if DEBUG
             Log.RegisterOutput(Console.Out);
@@ -40,10 +40,10 @@ namespace StarWing.Framework
             _gameWindow.Closed += (sender, args) => Exit();
         }
 
-        private void InitializeInputDevices(Form form)
+        private void InitializeInputDevices()
         {
-            Keyboard = new Keyboard(form);
-            Mouse = new Mouse(form);
+            Keyboard = new Keyboard(_gameWindow);
+            Mouse = new Mouse(_gameWindow, _gameWindow);
         }
 
         public void Run()

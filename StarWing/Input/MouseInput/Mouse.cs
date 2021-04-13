@@ -24,18 +24,25 @@ namespace StarWing.Framework.Input
         }
 
         /// <param name="form">Form to listen input from</param>
-        public Mouse(Form form)
+        public Mouse(IPressableManipulator<MouseEventArgs> pressableManipulator, IMovableManipulator<MouseEventArgs> movableManipulator)
         {
-            if (form == null)
+            if (pressableManipulator == null)
             {
-                var exception = new ArgumentNullException(nameof(form));
-                Log.Error("Form in mouse class was null", exception);
+                var exception = new ArgumentNullException(nameof(pressableManipulator));
+                Log.Error("Pressable manipulator in mouse class was null", exception);
                 throw exception;
             }
 
-            form.MouseDown += UpdateOnMouseDown;
-            form.MouseMove += UpdateMousePosition;
-            form.MouseUp += UpdateOnMouseUp;
+            if (movableManipulator == null)
+            {
+                var exception = new ArgumentNullException(nameof(movableManipulator));
+                Log.Error("Movable manipulator in mouse class was null", exception);
+                throw exception;
+            }
+
+            pressableManipulator.KeyDown += UpdateOnMouseDown;
+            pressableManipulator.KeyUp += UpdateOnMouseUp;
+            movableManipulator.Move += UpdateMousePosition;
 
             _justPressed = new();
             _pressed = new();
