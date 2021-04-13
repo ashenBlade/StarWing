@@ -5,8 +5,8 @@ namespace StarWing.Framework.Primitives
 {
     public struct Vector2D
     {
-        public float X { get; }
-        public float Y { get; }
+        public float X { get; private set;}
+        public float Y { get; private set; }
 
         private float _length;
 
@@ -26,11 +26,20 @@ namespace StarWing.Framework.Primitives
         {
             X = x;
             Y = y;
+
+            // Lazy calculating vector length
             _length = -1;
         }
 
-        public Vector2D Normalize() =>
-            new Vector2D(X / Length, Y / Length) { _length = 1.0f };
+        public void Normalize()
+        {
+            X = Length == 0
+                ? 0
+                : X / Length;
+            Y = Length == 0
+                ? 0
+                : Y / Length;
+        }
 
         #region Direction vectors
 
@@ -56,6 +65,8 @@ namespace StarWing.Framework.Primitives
 
         public static Vector2D operator /(Vector2D vector2D, float denominator)
         {
+            if (denominator == 0)
+                throw new DivideByZeroException("Dividing vector by zero");
             return new Vector2D(vector2D.X / denominator, vector2D.Y / denominator);
         }
 
