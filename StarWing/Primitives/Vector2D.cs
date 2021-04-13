@@ -37,8 +37,8 @@ namespace StarWing.Framework.Primitives
         public static readonly Vector2D Zero = new Vector2D(0, 0) { _length = 0 };
         public static readonly Vector2D Left = new Vector2D(-1, 0) { _length = 1 };
         public static readonly Vector2D Right = new Vector2D(1, 0) { _length = 1 };
-        public static readonly Vector2D Down = new Vector2D(0, 1) { _length = 1 };
-        public static readonly Vector2D Up = new Vector2D(0, -1) { _length = 1 };
+        public static readonly Vector2D Down = new Vector2D(0, -1) { _length = 1 };
+        public static readonly Vector2D Up = new Vector2D(0, 1) { _length = 1 };
 
         #endregion
 
@@ -93,19 +93,22 @@ namespace StarWing.Framework.Primitives
 
         #region Cast operators
 
+        /// <summary>
+        /// Implicitly converts Window coordinates to Math coordinates
+        /// </summary>
         public static implicit operator Vector2D(Point point)
         {
-            return new Vector2D(point.X, point.Y);
+            return new Vector2D(point.X, -point.Y);
         }
 
         public static implicit operator PointF(Vector2D vector)
         {
-            return new PointF(vector.X, vector.Y);
+            return new PointF(vector.X, -vector.Y);
         }
 
         public static implicit operator Point(Vector2D vector)
         {
-            return new Point(( int ) vector.X, ( int ) vector.Y);
+            return new Point(( int ) vector.X, -( int ) vector.Y);
         }
 
         #endregion Casting operators
