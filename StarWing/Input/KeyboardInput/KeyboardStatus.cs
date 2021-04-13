@@ -12,36 +12,31 @@ namespace StarWing.Framework.Input
     {
         private readonly List<Keys> _pressed;
         private readonly Keys _justPressed;
+        public bool Shift { get;  }
+        public bool Alt { get; }
+        public bool Control { get; }
 
-        public KeyboardStatus(List<Keys> pressed, Keys justPressed)
+        public KeyboardStatus(List<Keys> pressed, Keys justPressed, bool alt, bool ctrl, bool shift)
         {
             _justPressed = justPressed;
             _pressed = pressed;
+            Shift = shift;
+            Alt = alt;
+            Control = ctrl;
         }
 
-        public bool Shift =>
-            _pressed.Contains(Keys.Shift);
 
-        public bool Control =>
-            _pressed.Contains(Keys.Control);
+        public bool IsKeyDown(Keys key) =>
+            _pressed.Contains(key) ||
+            (key == Keys.Shift && Shift) ||
+            (key == Keys.Alt && Alt) ||
+            (key == Keys.Control && Control);
 
-        public bool Alt =>
-            _pressed.Contains(Keys.Alt);
+        public bool IsKeyUp(Keys key) =>
+            !IsKeyDown(key);
 
-        public bool IsKeyDown(Keys key)
-        {
-            return _pressed.Contains(key);
-        }
-
-        public bool IsKeyUp(Keys key)
-        {
-            return !IsKeyDown(key);
-        }
-
-        public bool IsKeyJustPressed(Keys key)
-        {
-            return key == _justPressed;
-        }
+        public bool IsKeyJustPressed(Keys key) =>
+            key == _justPressed;
 
         public Keys JustPressed =>
             _justPressed;

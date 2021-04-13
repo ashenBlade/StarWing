@@ -10,13 +10,16 @@ namespace StarWing.Framework.Input
         // It would be better to store it in integers
         private readonly List<Keys> _pressed = new();
         private Keys _toAdd = Keys.None;
+        private bool _alt = false;
+        private bool _shift = false;
+        private bool _ctrl = false;
 
         public KeyboardStatus Status {
             get
             {
                 var key = _toAdd;
                 _toAdd = Keys.None;
-                return new KeyboardStatus(_pressed, key);
+                return new KeyboardStatus(_pressed, key, _alt, _ctrl, _shift);
             }
         }
 
@@ -30,6 +33,13 @@ namespace StarWing.Framework.Input
                 throw exception;
             }
             SubscribeToForm(form);
+        }
+
+        private void UpdateModifiers(KeyEventArgs args)
+        {
+            _alt = args.Alt;
+            _ctrl = args.Control;
+            _shift = args.Shift;
         }
 
         private void SubscribeToForm(IPressableManipulator<KeyEventArgs> form)
@@ -50,11 +60,13 @@ namespace StarWing.Framework.Input
             {
                 _toAdd = Keys.None;
             }
+            UpdateModifiers(args);
         }
         private void UpdateOnKeyUp(object? sender, KeyEventArgs args)
         {
             var key = args.KeyCode;
             _pressed.Remove(key);
+            UpdateModifiers(args);
         }
     }
 }

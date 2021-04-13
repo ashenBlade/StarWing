@@ -9,13 +9,15 @@ namespace StarWing.Framework.Input
     public readonly struct MouseStatus
     {
         public Point Position { get; }
-
+        public ScrollDirection ScrollDirection { get; }
         private MouseButtons _justPressed { get; }
-        private List<MouseButtons> _pressed { get; }
 
-        public MouseStatus(Point position, List<MouseButtons> pressed, MouseButtons justPressed)
+        private IReadOnlyCollection<MouseButtons> _pressed { get; }
+
+        public MouseStatus(Point position, List<MouseButtons> pressed, MouseButtons justPressed, ScrollDirection scrollDirection)
         {
             Position = position;
+            ScrollDirection = scrollDirection;
             _pressed = pressed;
             _justPressed = justPressed;
         }
@@ -29,7 +31,10 @@ namespace StarWing.Framework.Input
         public bool IsButtonJustPressed(MouseButtons button) =>
             _justPressed == button;
 
-        public bool IsButtonPressed(MouseButtons button) =>
+        public bool IsButtonDown(MouseButtons button) =>
             _pressed.Contains(button);
+
+        public bool IsButtonUp(MouseButtons button)
+            => !IsButtonDown(button);
     }
 }

@@ -10,6 +10,7 @@ namespace StarWing.Framework.Input
     {
         // Better to store it in integer
         private List<MouseButtons> _pressed;
+        private ScrollDirection _scrollDirection;
         private MouseButtons _justPressed;
         public Point Position { get; private set; }
 
@@ -17,46 +18,50 @@ namespace StarWing.Framework.Input
         {
             get
             {
+                // Current values
                 var justPressed = _justPressed;
-                _justPressed = (int) MouseButtons.None;
-                return new MouseStatus(Position, _pressed, justPressed);
+                var scrollDirection = _scrollDirection;
+
+                // Clear on update
+                _justPressed = MouseButtons.None;
+                _scrollDirection = ScrollDirection.None;
+
+                return new MouseStatus(Position, _pressed, justPressed, scrollDirection);
             }
         }
 
-        /// <param name="form">Form to listen input from</param>
-        public Mouse(IPressableManipulator<MouseEventArgs> pressableManipulator, IMovableManipulator<MouseEventArgs> movableManipulator)
+        public Mouse(IMouseManipulator mouseManipulator)
         {
-            if (pressableManipulator == null)
+            if (mouseManipulator == null)
             {
-                var exception = new ArgumentNullException(nameof(pressableManipulator));
-                Log.Error("Pressable manipulator in mouse class was null", exception);
+                var exception = new ArgumentNullException(nameof(mouseManipulator));
+                Log.Error("Mouse manipulator argument in Mouse class constructor is null",exception);
                 throw exception;
             }
 
-            if (movableManipulator == null)
-            {
-                var exception = new ArgumentNullException(nameof(movableManipulator));
-                Log.Error("Movable manipulator in mouse class was null", exception);
-                throw exception;
-            }
-
-            pressableManipulator.KeyDown += UpdateOnMouseDown;
-            pressableManipulator.KeyUp += UpdateOnMouseUp;
-            movableManipulator.Move += UpdateMousePosition;
+            mouseManipulator.KeyDown += UpdateOnMouseDown;
+            mouseManipulator.KeyUp += UpdateOnMouseUp;
+            mouseManipulator.Move += UpdateOnMouseMove;
+            mouseManipulator.Scroll += UpdateOnMouseScroll;
 
             _justPressed = new();
             _pressed = new();
-            Position = Vector2D.Zero;
+            Position = Point.Empty;
+            _scrollDirection = ScrollDirection.None;
         }
 
-        private void UpdateMousePosition(object? sender, MouseEventArgs e)
+        private void UpdateOnMouseScroll(object? sender, ScrollEventArgs e)
+        {
+            _scrollDirection = e.Direction;
+        }
+
+        private void UpdateOnMouseMove(object? sender, MouseEventArgs e)
         {
             Position = e.Location;
         }
 
         private void UpdateOnMouseDown(object? sender, MouseEventArgs e)
         {
-            UpdateMousePosition(sender, e);
             var button = e.Button;
 
             // Pressed first time
@@ -73,7 +78,6 @@ namespace StarWing.Framework.Input
 
         private void UpdateOnMouseUp(object? sender, MouseEventArgs e)
         {
-            UpdateMousePosition(sender, e);
             _pressed.Remove(e.Button);
         }
     }
