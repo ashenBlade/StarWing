@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics; // FPS Counter time
+using System.Diagnostics;
 
 namespace StarWing.Framework
 {
     public class GameTimer
     {
-        private Stopwatch _elapsedTime;
+        private readonly Stopwatch _elapsedTime;
         private TimeSpan _totalTime;
         public TimeSpan SinceLastUpdate =>
             _elapsedTime.Elapsed;
