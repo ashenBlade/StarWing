@@ -19,7 +19,7 @@ namespace StarWing.Framework
             _totalTime = TimeSpan.Zero;
         }
 
-        public GameTime GetTime() =>
+        public IGameTime GetTime() =>
             new GameTime(SinceLastUpdate, TotalTime);
 
         public void Start()
