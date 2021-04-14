@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,7 +12,8 @@ namespace StarWing.Framework
     public abstract class Game
     {
         protected bool IsRunning { get; private set; }
-
+        protected IContentLoader ContentLoader { get; private set; }
+        protected List<IGameComponent> GameComponents { get; private set; }
         private Window _gameWindow { get; set; }
         protected IGameWindow GameWindow =>
             _gameWindow;
@@ -23,10 +25,26 @@ namespace StarWing.Framework
         {
             InitializeGameWindow();
             InitializeInputDevices();
+            InitializeContentLoader();
+            InitializeComponents();
 
 #if DEBUG
             Log.RegisterOutput(Console.Out);
 #endif
+        }
+
+        private void InitializeContentLoader()
+        {
+            ContentLoader = new ContentLoader();
+        }
+
+        private void InitializeComponents()
+        {
+            GameComponents = new List<IGameComponent>();
+            GameComponents.AddRange(new IGameComponent[]
+                                    {
+                                        ContentLoader
+                                    });
         }
 
         private void InitializeGameWindow()
@@ -99,7 +117,7 @@ namespace StarWing.Framework
 
         private void RenderFrame(PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.Turquoise);
+            e.Graphics.Clear(Color.Black);
             Render(e.Graphics);
         }
 
