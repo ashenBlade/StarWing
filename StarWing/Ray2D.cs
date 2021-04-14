@@ -1,4 +1,4 @@
-﻿namespace StarWing.Framework.Primitives
+﻿namespace StarWing.Framework
 {
     public struct Ray2D
     {

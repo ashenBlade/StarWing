@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using StarWing.Framework.Primitives;
 
 namespace StarWing.Framework.Input
 {

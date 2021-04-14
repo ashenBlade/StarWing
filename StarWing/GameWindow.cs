@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using StarWing.Framework.Input;
-using StarWing.Framework.Primitives;
 using ScrollEventArgs = StarWing.Framework.Input.ScrollEventArgs;
 
 namespace StarWing.Framework
@@ -21,7 +20,7 @@ namespace StarWing.Framework
 
 
         public Point Position =>
-            this.Location;
+            Location;
 
         public string Title =>
             Text;

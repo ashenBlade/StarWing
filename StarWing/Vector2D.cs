@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace StarWing.Framework.Primitives
+namespace StarWing.Framework
 {
     public struct Vector2D
     {

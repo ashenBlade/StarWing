@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using StarWing.Framework;
-using StarWing.Framework.Primitives;
 
 namespace Examples
 {
@@ -33,10 +32,6 @@ namespace Examples
                           .Select(key => key.ToString())
                           .Aggregate(string.Empty, (empty, key) => key);
             var mouseStatus = Mouse.Status;
-            if (mouseStatus.IsButtonJustPressed(MouseButtons.Left))
-            {
-                _clickCount++;
-            }
 
         }
 
