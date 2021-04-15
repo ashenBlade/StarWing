@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace StarWing.Framework.Input
 {
     public readonly struct KeyboardStatus
     {
-        private readonly List<Keys> _pressed;
+        private readonly IReadOnlyCollection<Keys> _pressed;
         private readonly Keys _justPressed;
 
         public bool Alt =>
@@ -17,7 +18,7 @@ namespace StarWing.Framework.Input
         public bool Shift =>
             _pressed.Contains(Keys.ShiftKey);
 
-        public KeyboardStatus(List<Keys> pressed, Keys justPressed)
+        public KeyboardStatus(IReadOnlyCollection<Keys> pressed, Keys justPressed)
         {
             _justPressed = justPressed;
             _pressed = pressed;
@@ -45,7 +46,7 @@ namespace StarWing.Framework.Input
         public Keys JustPressed =>
             _justPressed;
 
-        public Keys[] Pressed =>
-            _pressed.ToArray();
+        public IReadOnlyCollection<Keys> Pressed =>
+            _pressed;
     }
 }
