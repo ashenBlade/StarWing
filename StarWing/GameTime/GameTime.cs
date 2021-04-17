@@ -2,7 +2,7 @@
 
 namespace StarWing.Framework
 {
-    public class GameTime : IGameTime
+    public class GameTime
     {
         public TimeSpan SinceLastUpdate { get; }
         public TimeSpan TotalTime { get; }

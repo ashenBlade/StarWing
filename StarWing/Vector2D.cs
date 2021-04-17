@@ -105,7 +105,7 @@ namespace StarWing.Framework
         #region Cast operators
 
         /// <summary>
-        /// Implicitly converts Window coordinates to Math coordinates
+        /// Implicitly converts GameWindow coordinates to Math coordinates
         /// </summary>
         public static implicit operator Vector2D(Point point)
         {

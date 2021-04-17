@@ -7,6 +7,8 @@ namespace StarWing.Framework
     {
         public Image Image { get; }
 
+        public bool Disposed { get; private set; }
+
         public int Width =>
             Image.Width;
 
@@ -16,6 +18,7 @@ namespace StarWing.Framework
         public SpriteSheet(Image image)
         {
             Image = image ?? throw new ArgumentNullException(nameof(image), "Image can not be null");
+            Disposed = false;
         }
 
         public Sprite GetSprite(int x, int y, int width, int height, float angle = 0)
@@ -34,6 +37,7 @@ namespace StarWing.Framework
         public void Dispose()
         {
             Image?.Dispose();
+            Disposed = true;
         }
     }
 }

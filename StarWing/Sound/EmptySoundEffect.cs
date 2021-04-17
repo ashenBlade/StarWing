@@ -1,22 +1,20 @@
 ﻿using System;
+using System.Media;
 
 namespace StarWing.Framework.Sound
 {
-    public class SoundEffect
+    public class EmptySoundEffect : ISoundEffect
     {
         public void Play()
         {
-            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
         }
 
         public void Pause()
         {
-            throw new NotImplementedException();
         }
 
         public bool IsRepeatable { get; set; }

@@ -9,63 +9,49 @@ using StarWing.Framework.Input;
 
 namespace StarWing.Framework
 {
-    public abstract class Game
+    public abstract class Game : IDisposable
     {
-        protected bool IsRunning { get; private set; }
-        protected IContentLoader ContentLoader { get; private set; }
-        protected List<IGameComponent> GameComponents { get; private set; }
-        private Window _gameWindow { get; set; }
-        protected IGameWindow GameWindow =>
-            _gameWindow;
+        public IContentManager ContentManager { get; private set; }
+        public bool IsRunning { get; private set; }
+        public GameWindow GameWindow { get; private set; }
         protected IKeyboard Keyboard { get; private set; }
         protected IMouse Mouse { get; private set; }
-
 
         protected Game()
         {
             InitializeGameWindow();
             InitializeInputDevices();
-            InitializeContentLoader();
-            InitializeComponents();
+            InitializeContentManager();
 
 #if DEBUG
             Log.RegisterOutput(Console.Out);
 #endif
         }
 
-        private void InitializeContentLoader()
+        private void InitializeContentManager()
         {
-            ContentLoader = new ContentLoader();
-        }
-
-        private void InitializeComponents()
-        {
-            GameComponents = new List<IGameComponent>();
-            GameComponents.AddRange(new IGameComponent[]
-                                    {
-                                        ContentLoader
-                                    });
+            ContentManager = new ContentManager();
         }
 
         private void InitializeGameWindow()
         {
-            _gameWindow = new Window();
-            _gameWindow.Size = new Size(1280, 720);
-            _gameWindow.Shown += (sender, args) => Start();
-            _gameWindow.Paint += (sender, args) => RenderFrame(args);
-            _gameWindow.Closed += (sender, args) => Exit();
+            GameWindow = new GameWindow();
+            GameWindow.Size = new Size(1280, 720);
+            GameWindow.Shown += (sender, args) => Start();
+            GameWindow.Paint += (sender, args) => RenderFrame(args);
+            GameWindow.Closed += (sender, args) => Exit();
         }
 
         private void InitializeInputDevices()
         {
-            Keyboard = new Keyboard(_gameWindow);
-            Mouse = new Mouse(_gameWindow);
+            Keyboard = new Keyboard(GameWindow);
+            Mouse = new Mouse(GameWindow);
         }
 
         public void Run()
         {
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            Application.Run(_gameWindow);
+            Application.Run(GameWindow);
         }
 
         private void Start()
@@ -88,6 +74,7 @@ namespace StarWing.Framework
             timer.Start();
             while (IsRunning)
             {
+                // Continue receiving messages
                 Application.DoEvents();
 
                 // Update game logic
@@ -97,13 +84,13 @@ namespace StarWing.Framework
                 timer.Update();
 
                 // Render frame
-                _gameWindow.Refresh();
+                GameWindow.Refresh();
 
 #if DEBUG
                 // Update FPS counter
                 if (timer.TotalTime - previousCheckTime > TimeSpan.FromMilliseconds(1000))
                 {
-                    _gameWindow.Text = $"FPS: {fps}";
+                    GameWindow.Text = $"FPS: {fps}";
                     previousCheckTime = timer.TotalTime;
                     fps = 0;
                 }
@@ -124,26 +111,26 @@ namespace StarWing.Framework
 
         protected void Exit()
         {
-            // User exit function
             OnExit();
-
-            // Set game state to ended
             IsRunning = false;
-
             Log.Info("Game is exiting");
-
             Application.Exit();
         }
 
 
-        protected internal virtual void OnExit()
+        protected virtual void ContentLoad()
         { }
-        protected internal virtual void OnLoad()
+        protected virtual void ContentUnload()
         { }
-        protected internal virtual void Update(IGameTime gameTime)
+        protected virtual void OnExit()
         { }
-        protected internal virtual void Render(Graphics graphics)
+        protected virtual void OnLoad()
         { }
+        protected virtual void Update(GameTime gameTime)
+        { }
+        protected virtual void Render(Graphics graphics)
+        { }
+
         private void OnUnhandledException (object sender, UnhandledExceptionEventArgs e)
         {
             Log.Error("Something went wrong", new Exception(e.ToString()));
@@ -164,5 +151,10 @@ namespace StarWing.Framework
         public event EventHandler<EventArgs> Exiting;
 
         #endregion
+
+        public void Dispose()
+        {
+
+        }
     }
 }

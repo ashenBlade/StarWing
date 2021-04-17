@@ -1,6 +1,8 @@
-﻿namespace StarWing.Framework
+﻿using System;
+
+namespace StarWing.Framework
 {
-    public interface IGameComponent
+    public interface IGameComponent : IDisposable
     {
         void Initialize();
     }

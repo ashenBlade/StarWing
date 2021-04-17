@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Numerics;
 
 namespace StarWing.Framework
 {
@@ -9,6 +10,9 @@ namespace StarWing.Framework
         {
             return FromSpriteSheet(sheet, start.X, start.Y, size.Width, size.Height, rotation);
         }
+
+        public bool Disposed { get; private set; }
+
         public static Sprite FromSpriteSheet(SpriteSheet sheet, int x, int y, int width, int height, float rotation = 0)
         {
             var spriteImage = new Bitmap(width, height);
@@ -22,13 +26,7 @@ namespace StarWing.Framework
         {
             Image = image ?? throw new ArgumentNullException(nameof(image));
             Rotation = rotation;
-        }
-
-        public void Rotate(float angle)
-        {
-            if (angle == 0)
-                return;
-            Rotation += angle;
+            Disposed = false;
         }
 
         /// <summary>
@@ -40,8 +38,7 @@ namespace StarWing.Framework
         public Point Center =>
             new Point(Width / 2, Height / 2);
 
-        public float Rotation { get; private set; }
-
+        public float Rotation { get; set; }
 
         public int Width =>
             Image.Width;
@@ -52,6 +49,7 @@ namespace StarWing.Framework
         public void Dispose()
         {
             Image?.Dispose();
+            Disposed = true;
         }
     }
 }
