@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
@@ -9,21 +10,62 @@ using ScrollEventArgs = StarWing.Framework.Input.ScrollEventArgs;
 
 namespace StarWing.Framework
 {
-    internal class Window : Form, IGameWindow, IKeyboardManipulator, IMouseManipulator
+    public class GameWindow : Form,  IKeyboardManipulator, IMouseManipulator
     {
-        public Window()
+        public GameWindow()
         {
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             UseWaitCursor = false;
         }
 
+        public Size WindowSize
+        {
+            get => Size;
+            set => Size = value;
+        }
+
+        private bool _fullScreen;
+
+        public bool FullScreen
+        {
+            get => _fullScreen;
+            set
+            {
+                if (value == _fullScreen)
+                    return;
+                if (value)
+                {
+                    EnterFullScreen();
+                }
+                else
+                {
+                    ExitFullScreen();
+                }
+            } }
+
+        private void EnterFullScreen()
+        {
+            FormBorderStyle = FormBorderStyle.None;
+            TopMost = true;
+            WindowState = FormWindowState.Maximized;
+        }
+
+        private void ExitFullScreen()
+        {
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            TopMost = false;
+            WindowState = FormWindowState.Normal;
+        }
 
         public Point Position =>
             Location;
 
-        public string Title =>
-            Text;
+        public string Title
+        {
+            get => Text;
+            set => Text = value;
+        }
 
         event EventHandler<MouseEventArgs> IPressableManipulator<MouseEventArgs>.KeyDown
         {
