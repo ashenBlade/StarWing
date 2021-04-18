@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using StarWing.Framework.Sound;
 
@@ -53,6 +54,11 @@ namespace StarWing.Framework
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
             return new EmptySoundEffect();
+        }
+
+        public FontCollection LoadFont(string path)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()

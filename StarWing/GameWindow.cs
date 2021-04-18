@@ -15,14 +15,24 @@ namespace StarWing.Framework
         public GameWindow()
         {
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             UseWaitCursor = false;
         }
 
+        private Size _windowSize;
+
         public Size WindowSize
         {
-            get => Size;
-            set => Size = value;
+            get => _windowSize;
+            set
+            {
+                if (_windowSize == value)
+                {
+                    return;
+                }
+
+                _windowSize = Size = value;
+            }
         }
 
         private bool _fullScreen;
@@ -53,9 +63,10 @@ namespace StarWing.Framework
 
         private void ExitFullScreen()
         {
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             TopMost = false;
             WindowState = FormWindowState.Normal;
+            Size = _windowSize;
         }
 
         public Point Position =>

@@ -8,18 +8,20 @@ namespace StarWing.Framework.Input
     {
         // It would be better to store it in integers
         private readonly List<Keys> _pressed = new();
+
         private Keys _justPressed = Keys.None;
 
-        public KeyboardStatus Status {
+        public KeyboardStatus Status
+        {
             get
             {
-                var justPressed = _justPressed;
+                var justpressed = _justPressed;
                 _justPressed = Keys.None;
-                return new KeyboardStatus(_pressed, justPressed);
+                return new KeyboardStatus(_pressed, justpressed);
             }
         }
 
-    public Keyboard(IKeyboardManipulator manipulator)
+        public Keyboard(IKeyboardManipulator manipulator)
         {
             if (manipulator == null)
             {
@@ -49,6 +51,7 @@ namespace StarWing.Framework.Input
                 _justPressed = Keys.None;
             }
         }
+
         private void UpdateOnKeyUp(object? sender, KeyEventArgs args)
         {
             var key = args.KeyCode;

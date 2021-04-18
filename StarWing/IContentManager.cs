@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Text;
 using StarWing.Framework.Sound;
 
 namespace StarWing.Framework
@@ -7,5 +8,6 @@ namespace StarWing.Framework
     {
         SpriteSheet LoadSpriteSheet(string path);
         ISoundEffect LoadSoundEffect(string path);
+        FontCollection LoadFont(string path);
     }
 }
