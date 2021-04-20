@@ -2,7 +2,6 @@
 using System.Numerics;
 using System.Windows.Forms;
 using StarWing.Framework;
-using StarWing.Framework.Primitives;
 
 namespace Examples
 {
@@ -20,12 +19,12 @@ namespace Examples
             _rectangle = new Rectangle(_rectanglePosition, new Size(100, 100));
         }
 
-        protected override void Update(IGameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
             // Mouse input example
             var mouse = Mouse.Status;
             _mousePosition = mouse.Position;
-            if (mouse.IsButtonPressed(MouseButtons.Left))
+            if (mouse.IsButtonJustPressed(MouseButtons.Left))
             {
                 _rectanglePosition = mouse.Position;
                 return;

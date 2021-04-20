@@ -24,7 +24,7 @@ namespace Examples
             _clickCount = 0;
         }
 
-        protected override void Update(IGameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             var keyboardStatus = Keyboard.Status;

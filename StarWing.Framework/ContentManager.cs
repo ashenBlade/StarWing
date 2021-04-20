@@ -11,6 +11,7 @@ namespace StarWing.Framework
     {
         private Dictionary<string, SpriteSheet> _spriteSheets;
         private Dictionary<string, ISoundEffect> _soundEffects;
+        private Dictionary<string, Font> _fonts;
 
         public ContentManager()
         {
@@ -63,7 +64,6 @@ namespace StarWing.Framework
 
         public void Dispose()
         {
-
         }
     }
 }

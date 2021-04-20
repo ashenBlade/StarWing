@@ -1,13 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
-        <UseWindowsForms>true</UseWindowsForms>
-        <RootNamespace>StarWing.Framework</RootNamespace>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DefineConstants>TRACECOREAPP;DEBUG</DefineConstants>
-    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\StarWing.Framework\StarWing.Framework.csproj" />
+    </ItemGroup>
 
 </Project>

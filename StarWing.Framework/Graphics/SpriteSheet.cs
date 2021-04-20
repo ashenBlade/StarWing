@@ -29,7 +29,7 @@ namespace StarWing.Framework
         {
             var bitmap = new Bitmap(spritePosition.Width, spritePosition.Height);
             var destRect = new Rectangle(Point.Empty, bitmap.Size);
-            using var graphics = Graphics.FromImage(bitmap);
+            using var graphics = System.Drawing.Graphics.FromImage(bitmap);
             graphics.DrawImage(Image, destRect, spritePosition, GraphicsUnit.Pixel); // Copying image
             return new Sprite(bitmap, angle);
         }

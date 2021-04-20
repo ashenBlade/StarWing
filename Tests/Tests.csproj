@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StarWing\StarWing.csproj" />
+      <ProjectReference Include="..\StarWing.Framework\StarWing.Framework.csproj" />
     </ItemGroup>
 
 </Project>

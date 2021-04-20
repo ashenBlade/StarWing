@@ -109,17 +109,17 @@ namespace StarWing.Framework
         /// </summary>
         public static implicit operator Vector2D(Point point)
         {
-            return new Vector2D(point.X, -point.Y);
+            return new Vector2D(point.X, point.Y);
         }
 
         public static implicit operator PointF(Vector2D vector)
         {
-            return new PointF(vector.X, -vector.Y);
+            return new PointF(vector.X, vector.Y);
         }
 
         public static implicit operator Point(Vector2D vector)
         {
-            return new Point(( int ) vector.X, -( int ) vector.Y);
+            return new Point(( int ) vector.X, ( int ) vector.Y);
         }
 
         #endregion Casting operators
