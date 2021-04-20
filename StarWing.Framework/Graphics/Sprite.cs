@@ -5,6 +5,7 @@ namespace StarWing.Framework
 {
     public class Sprite : IDisposable
     {
+        public static readonly Sprite Empty = new Sprite(new Bitmap(0, 0));
         public static Sprite FromSpriteSheet(SpriteSheet sheet, Point start, Size size, float rotation = 0)
         {
             return FromSpriteSheet(sheet, start.X, start.Y, size.Width, size.Height, rotation);
