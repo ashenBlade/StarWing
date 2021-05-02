@@ -16,10 +16,10 @@ namespace StarWing.GameState
 
         public void Load(GameState gameState)
         {
-            CurrentState.UnloadContent();
+            CurrentState?.UnloadContent();
             CurrentState = gameState ?? throw new ArgumentNullException(nameof(gameState));
-            CurrentState.Initialize();
             CurrentState.LoadContent();
+            CurrentState.Initialize();
         }
 
         public void Update(GameTime gameTime, Input input)
