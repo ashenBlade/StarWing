@@ -62,6 +62,7 @@ namespace StarWing.Framework
 
             IsRunning = true;
 
+            OnStarting();
             RunMainLoop();
         }
 
@@ -109,7 +110,7 @@ namespace StarWing.Framework
         }
 
 
-        protected void Exit()
+        public void Exit()
         {
             OnExit();
             IsRunning = false;
