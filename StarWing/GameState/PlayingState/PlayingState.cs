@@ -15,17 +15,15 @@ namespace StarWing.GameState
 
         private bool _isPaused;
 
-        public SpaceShooterPlayingState(GameStateManager gameStateManager, Game game, IGameObjectFactory gameObjectFactory) :
+        public SpaceShooterPlayingState(GameStateManager gameStateManager, Game game) :
             base(gameStateManager, game)
         {
-            var image = Image.FromFile("bg.png");
-            Background = new StaticBackground(game.GameWindow.Size, image);
+            // Background = new StaticBackground(game.GameWindow.Size, image);
             _isPaused = false;
 
             HUD = new UILayer();
             MainMenu = new UILayer();
             World = new World();
-            World.AddEntity(new Player());
         }
 
         public override void Update(GameTime gameTime, Input input)
@@ -37,7 +35,7 @@ namespace StarWing.GameState
 
             if (!_isPaused)
             {
-                Background.Update(gameTime);
+                // Background.Update(gameTime);
                 World.Update(gameTime, input);
                 HUD.Update(gameTime, input);
             }
@@ -49,7 +47,7 @@ namespace StarWing.GameState
 
         public override void Render(Graphics graphics)
         {
-            Background.Render(graphics);
+            // Background.Render(graphics);
             World.Render(graphics);
             HUD.Render(graphics);
             if (_isPaused)

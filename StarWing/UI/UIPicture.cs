@@ -1,4 +1,6 @@
-﻿namespace StarWing.UI
+﻿using StarWing.Framework;
+
+namespace StarWing.UI
 {
     public class UIPicture: UIComponent
     {
