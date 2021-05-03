@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using StarWing.ECS;
-using StarWing.Entities;
 using StarWing.Framework;
 
 namespace StarWing.GameState
 {
-    public class SpaceShooterPlayingState : GameState
+    public class PlayingState : GameState
     {
         private IBackground Background { get; }
         private World World { get; set; }
@@ -15,7 +14,7 @@ namespace StarWing.GameState
 
         private bool _isPaused;
 
-        public SpaceShooterPlayingState(GameStateManager gameStateManager, Game game) :
+        public PlayingState(GameStateManager gameStateManager, Game game) :
             base(gameStateManager, game)
         {
             // Background = new StaticBackground(game.GameWindow.Size, image);
@@ -23,7 +22,7 @@ namespace StarWing.GameState
 
             HUD = new UILayer();
             MainMenu = new UILayer();
-            World = new World();
+            World = new World(null);
         }
 
         public override void Update(GameTime gameTime, Input input)

@@ -2,55 +2,40 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using StarWing.Core;
 using StarWing.Framework;
 
 namespace StarWing.ECS
 {
-    public class World
+    public class World : IWorld
     {
-        private List<Entity> _toAdd;
-        private List<Entity> _toRemove;
-        private List<Entity> _entities;
+        private List<GameObject> _toAdd;
+        private List<GameObject> _toRemove;
+        private List<GameObject> _entities;
 
-        public IReadOnlyCollection<Entity> Entities =>
+        public IEventManager EventManager { get; }
+        public IReadOnlyCollection<GameObject> AllGameObjects =>
             _entities;
 
-        public event Action<Entity> EntityAdded;
-        public event Action<Entity> EntityRemoved;
-
-        public World()
+        public World(IEventManager eventManager)
         {
-            _entities = new List<Entity>();
-            _toAdd = new List<Entity>();
-            _toRemove = new List<Entity>();
-        }
-
-        public void AddEntity(Entity entity)
-        {
-            if (!_toAdd.Contains(entity))
-            {
-                _toAdd.Add(entity);
-            }
-        }
-
-        public void DestroyEntity(Entity entity)
-        {
-            if (!_toRemove.Contains(entity))
-            {
-                _toRemove.Add(entity);
-            }
+            EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
+            _toAdd = new();
+            _toRemove = new();
+            _entities = new();
         }
 
         private void UpdateEntitiesCollection()
         {
             if (_toAdd.Count > 0)
             {
-                foreach (var entity in _toAdd)
+                foreach (var entity in _toAdd.Where(entity => !_entities.Contains(entity)))
                 {
-                    entity.Destroy += DestroyEntity;
                     _entities.Add(entity);
-                    EntityAdded?.Invoke(entity);
+                    entity.Initialize(this);
+                    GameObjectAdded?.Invoke(entity);
                 }
+
                 _toAdd.Clear();
             }
 
@@ -60,7 +45,7 @@ namespace StarWing.ECS
                 {
                     if (_entities.Remove(entity))
                     {
-                        EntityRemoved?.Invoke(entity);
+                        GameObjectRemoved?.Invoke(entity);
                     }
                 }
                 _toRemove.Clear();
@@ -69,16 +54,36 @@ namespace StarWing.ECS
 
         public void Update(GameTime gameTime, Input input)
         {
-            UpdateEntitiesCollection();
             _entities.ForEach(e => e.Update(gameTime, input));
+            UpdateEntitiesCollection();
         }
 
         public void Render(Graphics graphics)
         {
-            foreach (var entity in _entities.Where(e => e.IsVisible))
+            foreach (var entity in _entities)
             {
                 entity.Render(graphics);
             }
         }
+
+
+        public void RegisterGameObject(GameObject gameObject)
+        {
+            if (!_toAdd.Contains(gameObject))
+            {
+                _toAdd.Add(gameObject);
+            }
+        }
+
+        public void RemoveGameObject(GameObject gameObject)
+        {
+            if (!_toRemove.Contains(gameObject))
+            {
+                _toRemove.Add(gameObject);
+            }
+        }
+
+        public event Action<GameObject> GameObjectAdded;
+        public event Action<GameObject> GameObjectRemoved;
     }
 }

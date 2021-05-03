@@ -1,6 +1,6 @@
 ﻿namespace StarWing.ECS
 {
-    public interface IComponent
+    public interface IEventManager
     {
         
     }
