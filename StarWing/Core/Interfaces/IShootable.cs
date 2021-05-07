@@ -4,9 +4,9 @@ namespace StarWing.Core.Interfaces
 {
     public interface IShootable
     {
-        TimeSpan CoolDown { get; }
+        int Damage { get; set; }
+        TimeSpan CoolDown { get; set; }
+        TimeSpan MaxCoolDown { get; set; }
         void Shoot();
-        void IncreaseCoolDownTime(uint delta);
-        void DecreaseCoolDownTime(uint delta);
     }
 }
