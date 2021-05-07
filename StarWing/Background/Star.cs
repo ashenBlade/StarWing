@@ -13,7 +13,7 @@ namespace StarWing
 
         public void Update(GameTime gameTime)
         {
-            Position += Direction*gameTime.SinceLastUpdate.Seconds;
+            Position += Direction*gameTime.SinceLastUpdate.Milliseconds*(float)0.1;
             if (Position.X < 0)
             {
                 RandomSet();
@@ -45,7 +45,7 @@ namespace StarWing
 
         public void RandomSet()
         {
-            Position = new Vector2D(OuterSpace.GetRandomNumber(OuterSpace.Width, OuterSpace.Width + 300),
+            Position = new Vector2D(OuterSpace.GetRandomNumber(0, OuterSpace.Width + 300),
                 OuterSpace.GetRandomNumber(0, OuterSpace.Height));
             Color = Pens.Ivory;
         }

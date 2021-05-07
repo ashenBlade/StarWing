@@ -14,7 +14,7 @@ namespace StarWing.GameState.PlayingState
     public class PlayingState : GameState
     {
         private GameObjectModelCollection ModelCollection { get; }
-        private IBackground Background { get; }
+        private OuterSpace Background { get; }
         private World World { get; set; }
         private UILayer HUD { get; }
         private UILayer MainMenu { get; }
@@ -25,7 +25,7 @@ namespace StarWing.GameState.PlayingState
             base(gameStateManager, game)
         {
             ModelCollection = gameObjectModelCollection;
-            // Background = new OuterSpace();
+            Background = new OuterSpace(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
             HUD = new UILayer();
             MainMenu = new UILayer();
@@ -41,11 +41,13 @@ namespace StarWing.GameState.PlayingState
 
         public override void LoadContent()
         {
+            Background.Init(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             base.LoadContent();
         }
 
         private void InitializeGameWorld(GameObjectModelCollection collection)
         {
+            Background.Init(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             InitializeManagers(collection);
 
             var player = GetPlayer(collection.PlayerModel);
@@ -104,8 +106,8 @@ namespace StarWing.GameState.PlayingState
             }
 
             if (!_isPaused)
-            {
-                // Background.Update(gameTime);
+            { 
+                Background.Update(gameTime);
                 World.Update(gameTime, input);
                 HUD.Update(gameTime, input);
             }
@@ -117,7 +119,7 @@ namespace StarWing.GameState.PlayingState
 
         public override void Render(Graphics graphics)
         {
-            // Background.Render(graphics);
+            Background.Render(graphics);
             World.Render(graphics);
             HUD.Render(graphics);
             if (_isPaused)
