@@ -25,7 +25,8 @@ namespace StarWing.GameState.PlayingState
             base(gameStateManager, game)
         {
             ModelCollection = gameObjectModelCollection;
-            // Background = new OuterSpace();
+            Background = new OuterSpace();
+            OuterSpace.Init(100, 100);
             World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
             HUD = new UILayer();
             MainMenu = new UILayer();
@@ -66,7 +67,8 @@ namespace StarWing.GameState.PlayingState
 
         private PowerUpManager GetPowerUpManager(IEnumerable<PowerUpModel> powerUpModels)
         {
-            var manager = new PowerUpManager();
+            var factory = new PickUpFactory(powerUpModels);
+            var manager = new PowerUpManager(factory, TimeSpan.FromSeconds(10));
             return manager;
         }
 
@@ -84,11 +86,11 @@ namespace StarWing.GameState.PlayingState
                              Position = new Vector2D(400, 400),
                              Bounds = new Size(100, 100),
                              CoolDown = TimeSpan.FromMilliseconds(500),
+                             MaxCoolDown = TimeSpan.FromMilliseconds(500),
                              Damage = 10,
                              MaxHealth = playerModel.Health,
                              Health = playerModel.Health,
                              IsVisible = true,
-                             MaxCoolDown = TimeSpan.FromMilliseconds(500),
                              Sprite = playerModel.Sprite,
                              Velocity = playerModel.Velocity,
                              ProjectileFactory = playerModel.ProjectileFactory
@@ -117,7 +119,7 @@ namespace StarWing.GameState.PlayingState
 
         public override void Render(Graphics graphics)
         {
-            // Background.Render(graphics);
+            Background.Render(graphics);
             World.Render(graphics);
             HUD.Render(graphics);
             if (_isPaused)

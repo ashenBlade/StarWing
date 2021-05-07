@@ -14,8 +14,6 @@ namespace StarWing.GameState
         public override void LoadContent()
         {
             base.LoadContent();
-            // Load ship models, powerup models, etc...
-            // Then load MainMenuState (in update)
             var projectileFactory = LoadProjectileFactory();
             var powerUpModels = LoadPowerUpModels();
             var shipModels = LoadShipModels(projectileFactory);
@@ -27,16 +25,19 @@ namespace StarWing.GameState
         private ShipModel LoadPlayerShipModel(ProjectileFactory projectileFactory)
         {
             var sprite = new Sprite(Image.FromFile("Assets/player/ship2.png"));
-            var model = new ShipModel(sprite, 1.0f / 3.0f, 100, projectileFactory, TimeSpan.FromSeconds(4));
+            var model = new ShipModel(sprite, 1.0f, 100, projectileFactory, TimeSpan.FromSeconds(4));
             return model;
         }
 
         private List<PowerUpModel> LoadPowerUpModels()
         {
             var list = new List<PowerUpModel>();
-            var sprite = new Sprite(Image.FromFile("Assets/bonus/crys0.png"));
-            var powerUp = new PowerUpModel(sprite);
-            list.Add(powerUp);
+
+            // Velocity increaser
+            var velocityIncreaserSprite = new Sprite(Image.FromFile("Assets/bonus/crys0.png"));
+            var velocityIncreaser = new PowerUpModel( velocityIncreaserSprite, player => player.Velocity *= 2, player => player.Velocity /= 2, (player, time) => { }, TimeSpan.FromSeconds(10));
+            list.Add(velocityIncreaser);
+
             return list;
         }
 
@@ -53,7 +54,7 @@ namespace StarWing.GameState
             var list = new List<ShipModel>();
             var image = Image.FromFile("Assets/enemies/kamikaze.png");
             var sprite = new Sprite(image);
-            var model = new ShipModel(sprite, 1.0f / 4.0f, 10, factory, TimeSpan.FromSeconds(2));
+            var model = new ShipModel(sprite, 0.25f, 10, factory, TimeSpan.FromSeconds(2));
             list.Add(model);
             return list;
         }

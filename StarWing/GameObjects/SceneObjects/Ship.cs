@@ -46,21 +46,51 @@ namespace StarWing.GameObjects.SceneObjects
             }
         }
 
-        protected List<Item> Items { get; private set; }
+        private List<PowerUp> _powerUps { get; } = new List<PowerUp>();
+        private List<PowerUp> _toRemove { get; } = new List<PowerUp>();
+        private List<PowerUp> _toAdd { get; } = new List<PowerUp>();
+
+        public void ApplyPowerUp(PowerUp powerUp)
+        {
+            _toAdd.Add(powerUp);
+        }
+
+        public void RemovePowerUp(PowerUp powerUp)
+        {
+            _toRemove.Add(powerUp);
+        }
 
         public ProjectileFactory ProjectileFactory { get; set; }
 
         public Ship(IWorld world) : base(world)
         {
-            Items = new List<Item>();
         }
 
         public override void Update(GameTime gameTime, Input input)
         {
             base.Update(gameTime, input);
-            Items.ForEach(item => item.Update(gameTime));
+            UpdatePowerUps(gameTime);
             UpdateCoolDown(gameTime);
         }
+
+        private void UpdatePowerUps(GameTime gameTime)
+        {
+            foreach (var powerUp in _toAdd)
+            {
+                if (!_powerUps.Contains(powerUp))
+                {
+                    _powerUps.Add(powerUp);
+                }
+            }
+
+            foreach (var powerUp in _toRemove)
+            {
+                _powerUps.Remove(powerUp);
+            }
+
+            _powerUps.ForEach(up => up.Update(gameTime));
+        }
+
 
         private void UpdateCoolDown(GameTime gameTime)
         {
