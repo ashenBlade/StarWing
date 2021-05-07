@@ -36,8 +36,8 @@ namespace StarWing.GameObjects.SceneObjects
                 direction += Vector2D.Left;
             }
 
-            Direction = direction;
-            var newBounds = new Rectangle(Position + Direction * Velocity, Bounds);
+            Direction = direction * Velocity;
+            var newBounds = new Rectangle(Position + Direction, Bounds);
             if (World.Bounds.Contains(newBounds))
             {
                 Position = newBounds.Location;
