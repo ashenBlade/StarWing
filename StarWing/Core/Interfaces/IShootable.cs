@@ -1,4 +1,5 @@
 ﻿using System;
+using StarWing.Framework;
 
 namespace StarWing.Core.Interfaces
 {
@@ -7,6 +8,6 @@ namespace StarWing.Core.Interfaces
         int Damage { get; set; }
         TimeSpan CoolDown { get; set; }
         TimeSpan MaxCoolDown { get; set; }
-        void Shoot();
+        void Shoot(Vector2D direction);
     }
 }

@@ -37,7 +37,7 @@ namespace StarWing.GameObjects.SceneObjects
             }
 
             Direction = direction;
-            var newBounds = new Rectangle(Position + Direction * Velocity * (float) gameTime.SinceLastUpdate.TotalMilliseconds, Bounds);
+            var newBounds = new Rectangle(Position + Direction * Velocity, Bounds);
             if (World.Bounds.Contains(newBounds))
             {
                 Position = newBounds.Location;
@@ -45,7 +45,7 @@ namespace StarWing.GameObjects.SceneObjects
 
             if (keyboard.IsKeyDown(Keys.Space))
             {
-                Shoot();
+                Shoot(Vector2D.Up);
             }
         }
     }

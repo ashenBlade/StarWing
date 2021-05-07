@@ -27,7 +27,11 @@ namespace StarWing.GameObjects.Implementations
                             Health = model.Health,
                             Velocity = model.Velocity,
                             Sprite = model.Sprite,
-                            Direction = Vector2D.Down
+                            Direction = Vector2D.Down,
+                            Bounds = model.Sprite.Size,
+                            MaxHealth = model.Health,
+                            MaxCoolDown = model.CoolDown,
+                            CoolDown = model.CoolDown
                         };
             return enemy;
         }

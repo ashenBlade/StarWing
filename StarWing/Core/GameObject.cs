@@ -14,9 +14,32 @@ namespace StarWing
         protected IWorld World { get; }
         public Sprite Sprite { get; set; }
         public bool IsVisible { get; set; }
-        public Vector2D Position { get; set; }
-        public Size Bounds { get; set; }
-        public Rectangle BoundingBox { get; set; }
+        private Vector2D _position;
+        public Vector2D Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+            }
+        }
+        private Size _bounds;
+        public Size Bounds
+        {
+            get => _bounds;
+            set
+            {
+                _bounds = value;
+            } }
+        public Rectangle BoundingBox
+        {
+            get => new Rectangle(_position, _bounds);
+            set
+            {
+                _position = value.Location;
+                _bounds = value.Size;
+            }
+        }
         #endregion
 
         public GameObject(IWorld world)

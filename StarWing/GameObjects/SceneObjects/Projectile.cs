@@ -1,7 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms.VisualStyles;
 using StarWing.Core;
-using StarWing.Core.Interfaces;
-using StarWing.ECS;
 using StarWing.Framework;
 
 namespace StarWing.GameObjects.SceneObjects
@@ -10,6 +10,7 @@ namespace StarWing.GameObjects.SceneObjects
     {
         public Ship Owner { get; set; }
         public int Damage { get; set; }
+        public TimeSpan LifeTime { get; set; } = TimeSpan.FromSeconds(5);
 
         public Projectile(IWorld world) : base(world)
         { }
@@ -28,6 +29,15 @@ namespace StarWing.GameObjects.SceneObjects
         {
             base.Update(gameTime, input);
             Position += Direction * Velocity;
+            if (!IsInGameBounds())
+            {
+                World.RemoveGameObject(this);
+            }
+        }
+
+        private bool IsInGameBounds()
+        {
+            return World.Bounds.Contains(BoundingBox) || World.Bounds.IntersectsWith(BoundingBox);
         }
     }
 }

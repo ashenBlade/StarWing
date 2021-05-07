@@ -25,6 +25,7 @@ namespace StarWing.GameObjects.Implementations
             projectile.Position = owner.Position;
             projectile.Owner = owner;
             projectile.Sprite = _sprite;
+            projectile.Bounds = _sprite.Size;
             return projectile;
         }
     }

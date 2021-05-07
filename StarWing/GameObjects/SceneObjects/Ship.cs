@@ -59,6 +59,18 @@ namespace StarWing.GameObjects.SceneObjects
         {
             base.Update(gameTime, input);
             Items.ForEach(item => item.Update(gameTime));
+            UpdateCoolDown(gameTime);
+        }
+
+        private void UpdateCoolDown(GameTime gameTime)
+        {
+            if (CoolDown > TimeSpan.Zero)
+            {
+                var coolDown = CoolDown - gameTime.SinceLastUpdate;
+                CoolDown = coolDown < TimeSpan.Zero
+                               ? TimeSpan.Zero
+                               : coolDown;
+            }
         }
 
         public event ILivable.HealthChangedDelegate MaxHealthChanged;
@@ -67,11 +79,11 @@ namespace StarWing.GameObjects.SceneObjects
         public int Damage { get; set; }
         public TimeSpan CoolDown { get; set; }
         public TimeSpan MaxCoolDown { get; set; }
-        public void Shoot()
+        public void Shoot(Vector2D direction)
         {
             if (CoolDown > TimeSpan.Zero)
                 return;
-            var projectile = ProjectileFactory.Create(World,this, Damage, Direction);
+            var projectile = ProjectileFactory.Create(World,this, Damage, direction);
             World.RegisterGameObject(projectile);
             CoolDown += MaxCoolDown;
         }

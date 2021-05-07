@@ -1,7 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
+using StarWing.GameObjects.Implementations;
+using StarWing.GameObjects.Manager;
+using StarWing.GameObjects.SceneObjects;
 using StarWing.GameWorld;
 
 namespace StarWing.GameState.PlayingState
@@ -41,7 +46,54 @@ namespace StarWing.GameState.PlayingState
 
         private void InitializeGameWorld(GameObjectModelCollection collection)
         {
-            // TODO
+            InitializeManagers(collection);
+
+            var player = GetPlayer(collection.PlayerModel);
+            World.RegisterGameObject(player);
+        }
+
+        private void InitializeManagers(GameObjectModelCollection collection)
+        {
+            var collisionManager = new CollisionManager();
+            World.RegisterManager(collisionManager);
+
+            var enemyManager = GetEnemyManager(collection.ShipModels);
+            World.RegisterManager(enemyManager);
+
+            var powerUpManager = GetPowerUpManager(collection.PowerUpModels);
+            World.RegisterManager(powerUpManager);
+        }
+
+        private PowerUpManager GetPowerUpManager(IEnumerable<PowerUpModel> powerUpModels)
+        {
+            var manager = new PowerUpManager();
+            return manager;
+        }
+
+        private EnemyManager GetEnemyManager(IEnumerable<ShipModel> shipModels)
+        {
+            var factory = new EnemyFactory(shipModels, World);
+            var enemyManager = new EnemyManager(factory, 10, TimeSpan.FromSeconds(3));
+            return enemyManager;
+        }
+
+        private Player GetPlayer(ShipModel playerModel)
+        {
+            var player = new Player(World)
+                         {
+                             Position = new Vector2D(400, 400),
+                             Bounds = new Size(100, 100),
+                             CoolDown = TimeSpan.FromMilliseconds(500),
+                             Damage = 10,
+                             MaxHealth = playerModel.Health,
+                             Health = playerModel.Health,
+                             IsVisible = true,
+                             MaxCoolDown = TimeSpan.FromMilliseconds(500),
+                             Sprite = playerModel.Sprite,
+                             Velocity = playerModel.Velocity,
+                             ProjectileFactory = playerModel.ProjectileFactory
+                         };
+            return player;
         }
 
         public override void Update(GameTime gameTime, Input input)

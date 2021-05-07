@@ -44,7 +44,7 @@ namespace StarWing.GameObjects.Manager
         {
             for (int i = 0; i < maxCount; i++)
             {
-                var enemy = GetEnemy();
+                var enemy = _factory.CreateRandom();
                 enemy.Die += EnemyOnDie;
                 _availableEnemies.Enqueue(enemy);
             }
@@ -71,18 +71,28 @@ namespace StarWing.GameObjects.Manager
 
             _lastSpawnTime += gameTime.SinceLastUpdate;
 
-            foreach (var enemy in _enemies.Where(e => e.BoundingBox.Y > World.Bounds.Y))
+            foreach (var enemy in _enemies.Where(IsOutOfGameBounds))
             {
                 World.RemoveGameObject(enemy);
             }
         }
 
+        private bool IsOutOfGameBounds(Enemy enemy)
+        {
+            return World.Bounds.Bottom < enemy.Position.Y;
+        }
+
         private Enemy GetEnemy()
         {
-            var enemy = _availableEnemiesCount > 0
-                            ? _availableEnemies.Dequeue()
-                            : _factory.CreateRandom();
+            var enemy = _availableEnemies.Dequeue();
             enemy = SetEnemyPosition(enemy);
+            enemy = SetEnemyMovement(enemy);
+            return enemy;
+        }
+
+        private Enemy SetEnemyMovement(Enemy enemy)
+        {
+            enemy.Direction = Vector2D.Down;
             return enemy;
         }
 

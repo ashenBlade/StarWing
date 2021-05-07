@@ -12,7 +12,7 @@ namespace StarWing.GameObjects.SceneObjects
         {
             base.Update(gameTime, input);
             Position += Direction * Velocity;
-            Shoot();
+            Shoot(Direction);
         }
     }
 }

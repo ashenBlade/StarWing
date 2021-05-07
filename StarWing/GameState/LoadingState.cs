@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
@@ -26,7 +27,7 @@ namespace StarWing.GameState
         private ShipModel LoadPlayerShipModel(ProjectileFactory projectileFactory)
         {
             var sprite = new Sprite(Image.FromFile("Assets/player/ship2.png"));
-            var model = new ShipModel(sprite, 1, 10, projectileFactory);
+            var model = new ShipModel(sprite, 1.0f / 3.0f, 100, projectileFactory, TimeSpan.FromSeconds(4));
             return model;
         }
 
@@ -52,7 +53,7 @@ namespace StarWing.GameState
             var list = new List<ShipModel>();
             var image = Image.FromFile("Assets/enemies/kamikaze.png");
             var sprite = new Sprite(image);
-            var model = new ShipModel(sprite, 10, 100, factory);
+            var model = new ShipModel(sprite, 1.0f / 4.0f, 10, factory, TimeSpan.FromSeconds(2));
             list.Add(model);
             return list;
         }

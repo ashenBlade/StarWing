@@ -10,7 +10,7 @@ namespace StarWing.GameState
     public class MainMenuState : GameState
     {
         private GameObjectModelCollection _gameObjectModelCollection;
-        private UILayer _menu;
+        private UIMenu _menu;
         public MainMenuState(GameStateManager gameStateManager, Game game, GameObjectModelCollection gameObjectModelCollection) : base(gameStateManager, game)
         {
             _gameObjectModelCollection = gameObjectModelCollection;
@@ -19,18 +19,20 @@ namespace StarWing.GameState
 
         private void InitializeMenuLayer()
         {
-            _menu = new UILayer();
+            _menu = new UIMenu();
             var font = new Font(FontFamily.GenericMonospace, 12);
-            var playButtonText = new UILabel() { Font = font, Bounds = new Rectangle(100, 100, 100, 50) , Text = "Play" };
-            var exitButtonText = new UILabel() { Font = font, Bounds = new Rectangle(100, 200, 100, 50), Text = "Exit" };
-            var playButton = new UIButton() { Bounds = new Rectangle(new Point(100, 100), new Size(100, 50)), Content = playButtonText};
+            var playButtonPosition = new Rectangle(100, 100, 100, 50);
+            var playButtonText = new UILabel() { Font = font, Position = playButtonPosition.Location, Text = "Play"};
+            var exitButtonPosition = new Rectangle(100, 200, 100, 50);
+            var exitButtonText = new UILabel() { Font = font, Position = exitButtonPosition.Location, Text = "Exit"};
+            var playButton = new UIButton() { Bounds = playButtonPosition, Content = playButtonText, Background = Color.White};
             playButton.Click += () => GameStateManager.Load(new PlayingState.PlayingState(GameStateManager, Game,
                                                                                           _gameObjectModelCollection));
 
-            var exitButton = new UIButton() { Bounds = new Rectangle(new Point(100, 200), new Size(100, 50)), Content = exitButtonText};
+            var exitButton = new UIButton() { Bounds = exitButtonPosition, Content = exitButtonText, Background = Color.White};
             exitButton.Click += () => Game.Exit();
-            _menu.AddComponent(playButton);
-            _menu.AddComponent(exitButton);
+            _menu.AddButton(playButton);
+            _menu.AddButton(exitButton);
         }
 
         public override void LoadContent()
