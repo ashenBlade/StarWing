@@ -6,9 +6,23 @@ namespace StarWing
 {
     public class OuterSpace: IBackground
     {
-        // размеры окна
-        public static int Width;
+        private static OuterSpace _current;
+
         public static int Height;
+        public static int Width;
+
+        public OuterSpace(int height, int width)
+        {
+            Height = height;
+            Width = width;
+        }
+
+        public static void StartNew(OuterSpace outerSpace)
+        {
+            _current = outerSpace ?? throw new ArgumentNullException(nameof(outerSpace));
+        }
+        public static IBackground Current =>
+            _current;
 
         private static Star[] stars;
 
@@ -18,11 +32,10 @@ namespace StarWing
         {
             return rnd.Next(min,max);
         }
-
-        static public void Init(int width, int height)
+        public void Init(int height, int width)
         {
-            OuterSpace.Width = width;
             OuterSpace.Height = height;
+            OuterSpace.Width = width;
             stars = new Star[50];
             for (int i = 0; i < stars.Length; i++)
             {
@@ -32,7 +45,7 @@ namespace StarWing
         
         public void Render(Graphics graphics)
         {
-            graphics.Clear(Color.MidnightBlue);
+            graphics.Clear(Color.Black);
             foreach (var star in stars)
             {
                 star.Render(graphics);

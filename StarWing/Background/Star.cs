@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace StarWing
 {
-    public class Star : IBackground
+    public class Star 
     {
         public void Render(Graphics graphics)
         {
@@ -13,7 +13,7 @@ namespace StarWing
 
         public void Update(GameTime gameTime)
         {
-            Position += Direction;
+            Position += Direction*gameTime.SinceLastUpdate.Milliseconds*(float)0.1;
             if (Position.X < 0)
             {
                 RandomSet();
@@ -45,7 +45,7 @@ namespace StarWing
 
         public void RandomSet()
         {
-            Position = new Vector2D(OuterSpace.GetRandomNumber(OuterSpace.Width, OuterSpace.Width + 300),
+            Position = new Vector2D(OuterSpace.GetRandomNumber(0, OuterSpace.Width + 300),
                 OuterSpace.GetRandomNumber(0, OuterSpace.Height));
             Color = Pens.Ivory;
         }
