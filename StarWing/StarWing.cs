@@ -18,7 +18,7 @@ namespace StarWing
         protected override void OnStarting()
         {
             base.OnStarting();
-            var startState = new MainMenuState(GameStateManager, this);
+            var startState = new LoadingState(GameStateManager, this);
             GameStateManager.Load(startState);
         }
 

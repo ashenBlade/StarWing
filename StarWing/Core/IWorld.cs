@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using StarWing.ECS;
+using StarWing.GameObjects.SceneObjects;
 
 namespace StarWing.Core
 {
@@ -12,5 +14,6 @@ namespace StarWing.Core
         event Action<GameObject> GameObjectAdded;
         event Action<GameObject> GameObjectRemoved;
         IReadOnlyCollection<GameObject> AllGameObjects { get; }
+        Rectangle Bounds { get; }
     }
 }

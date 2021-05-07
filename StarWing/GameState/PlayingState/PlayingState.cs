@@ -1,12 +1,14 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using StarWing.ECS;
 using StarWing.Framework;
+using StarWing.GameObjectModel;
+using StarWing.GameWorld;
 
-namespace StarWing.GameState
+namespace StarWing.GameState.PlayingState
 {
     public class PlayingState : GameState
     {
+        private GameObjectModelCollection ModelCollection { get; }
         private IBackground Background { get; }
         private World World { get; set; }
         private UILayer HUD { get; }
@@ -14,15 +16,32 @@ namespace StarWing.GameState
 
         private bool _isPaused;
 
-        public PlayingState(GameStateManager gameStateManager, Game game) :
+        public PlayingState(GameStateManager gameStateManager, Game game, GameObjectModelCollection gameObjectModelCollection) :
             base(gameStateManager, game)
         {
-            // Background = new StaticBackground(game.GameWindow.Size, image);
-            _isPaused = false;
-
+            ModelCollection = gameObjectModelCollection;
+            // Background = new OuterSpace();
+            World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
             HUD = new UILayer();
             MainMenu = new UILayer();
-            World = new World(null);
+            _isPaused = false;
+        }
+
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            InitializeGameWorld(ModelCollection);
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
+        private void InitializeGameWorld(GameObjectModelCollection collection)
+        {
+            // TODO
         }
 
         public override void Update(GameTime gameTime, Input input)
