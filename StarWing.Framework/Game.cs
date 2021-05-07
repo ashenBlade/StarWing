@@ -105,7 +105,7 @@ namespace StarWing.Framework
 
         private void RenderFrame(PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.Black);
+            e.Graphics.Clear(Color.Transparent);
             Render(e.Graphics);
         }
 

@@ -3,26 +3,54 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using StarWing.Core;
+using StarWing.ECS;
 using StarWing.Framework;
+using StarWing.GameObjects.Items;
+using StarWing.GameObjects.Manager;
+using StarWing.GameObjects.SceneObjects;
 
-namespace StarWing.ECS
+namespace StarWing.GameWorld
 {
     public class World : IWorld
     {
+        private static World _current;
+        public static void StartNew(World world)
+        {
+            _current = world ?? throw new ArgumentNullException(nameof(world));
+        }
+        public static IWorld Current =>
+            _current;
+
         private List<GameObject> _toAdd;
         private List<GameObject> _toRemove;
         private List<GameObject> _entities;
+
+        private List<Manager> _managers;
 
         public IEventManager EventManager { get; }
         public IReadOnlyCollection<GameObject> AllGameObjects =>
             _entities;
 
-        public World(IEventManager eventManager)
+        public Rectangle Bounds { get; }
+
+        public World(Rectangle bounds, IEventManager eventManager)
         {
-            EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
-            _toAdd = new();
-            _toRemove = new();
-            _entities = new();
+            Bounds = bounds;
+            // EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
+            _toAdd = new List<GameObject>();
+            _toRemove = new List<GameObject>();
+            _entities = new List<GameObject>();
+            _managers = new List<Manager>();
+        }
+
+
+        public void RegisterManager(Manager manager)
+        {
+            if (!_managers.Contains(manager))
+            {
+                manager.Initialize(this);
+                _managers.Add(manager);
+            }
         }
 
         private void UpdateEntitiesCollection()
@@ -32,7 +60,6 @@ namespace StarWing.ECS
                 foreach (var entity in _toAdd.Where(entity => !_entities.Contains(entity)))
                 {
                     _entities.Add(entity);
-                    entity.Initialize(this);
                     GameObjectAdded?.Invoke(entity);
                 }
 
@@ -55,6 +82,7 @@ namespace StarWing.ECS
         public void Update(GameTime gameTime, Input input)
         {
             _entities.ForEach(e => e.Update(gameTime, input));
+            _managers.ForEach(m => m.Update(gameTime));
             UpdateEntitiesCollection();
         }
 

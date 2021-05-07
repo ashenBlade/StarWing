@@ -49,6 +49,6 @@ namespace StarWing
                 OuterSpace.GetRandomNumber(0, OuterSpace.Height));
             Color = Pens.Ivory;
         }
-        
+
     }
 }

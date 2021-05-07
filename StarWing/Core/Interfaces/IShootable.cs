@@ -1,12 +1,13 @@
 ﻿using System;
+using StarWing.Framework;
 
 namespace StarWing.Core.Interfaces
 {
     public interface IShootable
     {
-        TimeSpan CoolDown { get; }
-        void Shoot();
-        void IncreaseCoolDownTime(uint delta);
-        void DecreaseCoolDownTime(uint delta);
+        int Damage { get; set; }
+        TimeSpan CoolDown { get; set; }
+        TimeSpan MaxCoolDown { get; set; }
+        void Shoot(Vector2D direction);
     }
 }

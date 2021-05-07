@@ -1,12 +1,16 @@
-﻿namespace StarWing.Core.Interfaces
+﻿using System;
+
+namespace StarWing.Core.Interfaces
 {
+
     public interface ILivable
     {
-        int Health { get; }
-        int MaxHealth { get; }
-        void TakeDamage(uint damage);
-        void Heal(uint points);
-        void IncreaseMaxHealth(uint points);
-        void DecreaseMaxHealth(uint points);
+        int Health { get; set; }
+        int MaxHealth { get; set; }
+        event HealthChangedDelegate HealthChanged;
+        event HealthChangedDelegate MaxHealthChanged;
+        event LivableDiedDelegate Die;
+        delegate void HealthChangedDelegate(ILivable livable, int delta);
+        delegate void LivableDiedDelegate(ILivable livable);
     }
 }

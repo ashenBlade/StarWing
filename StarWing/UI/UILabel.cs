@@ -6,6 +6,12 @@ namespace StarWing.UI
     {
         public string Text { get; set; }
         public float Size { get; set; }
+        public Color Color { get; set; } = Color.Black;
         public Font Font { get; set; }
+        public override void Render(Graphics graphics)
+        {
+            base.Render(graphics);
+            graphics.DrawString(Text, Font, new SolidBrush(Color), Position);
+        }
     }
 }

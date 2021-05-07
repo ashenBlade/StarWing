@@ -20,6 +20,11 @@ namespace StarWing.GameState
             }
         }
 
+        public void AddComponent(UIComponent component)
+        {
+            _components.Add(component);
+        }
+
         public virtual void Update(GameTime gameTime, Input input)
         {
             _components.ForEach(component => component.Update(gameTime, input));

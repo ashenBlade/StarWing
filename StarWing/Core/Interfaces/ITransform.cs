@@ -6,6 +6,6 @@ namespace StarWing.Core.Interfaces
 {
     public interface ITransform
     {
-        public Vector2D Position { get; }
+        public Vector2D Position { get; set; }
     }
 }
