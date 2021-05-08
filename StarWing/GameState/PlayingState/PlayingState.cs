@@ -8,6 +8,7 @@ using StarWing.GameObjects.Implementations;
 using StarWing.GameObjects.Manager;
 using StarWing.GameObjects.SceneObjects;
 using StarWing.GameWorld;
+using StarWing.UI;
 
 namespace StarWing.GameState.PlayingState
 {
@@ -17,7 +18,7 @@ namespace StarWing.GameState.PlayingState
         private OuterSpace Background { get; }
         private World World { get; set; }
         private UILayer HUD { get; }
-        private UILayer MainMenu { get; }
+        private UILayer PauseMenu { get; }
 
         private bool _isPaused;
 
@@ -28,7 +29,8 @@ namespace StarWing.GameState.PlayingState
             Background = new OuterSpace(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
             HUD = new UILayer();
-            MainMenu = new UILayer();
+            PauseMenu = new UILayer();
+            SetUpPauseMenu(PauseMenu);
             _isPaused = false;
         }
 
@@ -99,6 +101,52 @@ namespace StarWing.GameState.PlayingState
             return player;
         }
 
+        private void SetUpPauseMenu(UILayer menu)
+        {
+            var gameWindowSize = Game.GameWindow.Size;
+            var standardButtonSize = new Size(100, 50);
+            var buttonPadding = 10; // padding between buttons
+
+            var resumeButtonPosition = new Point(gameWindowSize.Width / 2 - standardButtonSize.Width / 2,
+                                                 gameWindowSize.Height / 2 - standardButtonSize.Height / 2 - standardButtonSize.Height);
+            var resumeButtonBounds = new Rectangle( resumeButtonPosition, standardButtonSize);
+            var resumeText = new UILabel()
+                             {
+                                 Background =  Color.White,
+                                 Font = new Font(FontFamily.GenericMonospace, 12),
+                                 FontColor = Color.Black,
+                                 Text = "Resume",
+                                 Position = resumeButtonBounds.Location,
+                             };
+            var resumeButton = new UIButton(resumeText)
+                               {
+                                   Background = Color.White,
+                                   Bounds = resumeButtonBounds
+                               };
+            resumeButton.Click += () => _isPaused = false;
+            menu.AddComponent(resumeButton);
+
+            var exitButtonPosition = new Point(gameWindowSize.Width / 2 - standardButtonSize.Width / 2,
+                                                 gameWindowSize.Height / 2
+                                               - standardButtonSize.Height / 2
+                                               + buttonPadding);
+            var exitButtonBounds = new Rectangle( exitButtonPosition, standardButtonSize);
+            var exitText = new UILabel()
+                           {
+                               Background = Color.White,
+                               Position = exitButtonBounds.Location,
+                               Text = "Exit",
+                               Font = new Font(FontFamily.GenericMonospace, 12),
+                               Bounds = exitButtonBounds
+                           };
+            var exitButton = new UIButton()
+                             {
+                                 Content = exitText, Background = Color.White, Bounds = exitButtonBounds,
+                             };
+            exitButton.Click += Game.Exit;
+            menu.AddComponent(exitButton);
+        }
+
         public override void Update(GameTime gameTime, Input input)
         {
             if (input.KeyboardStatus.IsKeyJustPressed(Keys.Escape))
@@ -107,14 +155,14 @@ namespace StarWing.GameState.PlayingState
             }
 
             if (!_isPaused)
-            { 
+            {
                 Background.Update(gameTime);
                 World.Update(gameTime, input);
                 HUD.Update(gameTime, input);
             }
             else
             {
-                MainMenu.Update(gameTime, input);
+                PauseMenu.Update(gameTime, input);
             }
         }
 
@@ -125,7 +173,7 @@ namespace StarWing.GameState.PlayingState
             HUD.Render(graphics);
             if (_isPaused)
             {
-                MainMenu.Render(graphics);
+                PauseMenu.Render(graphics);
             }
         }
     }
