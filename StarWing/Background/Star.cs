@@ -1,27 +1,28 @@
-﻿using StarWing.Framework;
+﻿using System;
+using StarWing.Framework;
 using System.Drawing;
 
 namespace StarWing
 {
     public class Star
     {
+        private Random rnd = new Random();
         public void Render(Graphics graphics)
-        {
-            graphics.DrawEllipse(Color, Position.X, Position.Y, Height, Width);
-            graphics.FillEllipse(Brushes.Ivory, Position.X, Position.Y, Height, Width);
+        { 
+            graphics.DrawEllipse(new Pen(Color), Position.X, Position.Y, Height, Width);
+            graphics.FillEllipse(new SolidBrush(Color), Position.X, Position.Y, Height, Width);
         }
-        
         
 
         private int Height;
         private int Width;
         public Vector2D Position;
         public Vector2D Direction;
-        public Pen Color;
+        public Color Color;
         
         
         
-        public Star(Vector2D position, Vector2D direction, int size, Pen color)
+        public Star(Vector2D position, Vector2D direction, int size, Color color)
         {
             Position = position;
             Direction = direction;
@@ -32,9 +33,10 @@ namespace StarWing
 
         public Star(Vector2D direction)
         {
+            Color = Color.FromArgb(rnd.Next(100,150), rnd.Next(100,150),rnd.Next(100,150));
             Direction = direction;
-            Height = 1;
-            Width = 1;
+            Height = 2;
+            Width = 2;
         }
         
     }

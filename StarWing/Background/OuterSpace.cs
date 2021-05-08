@@ -26,7 +26,7 @@ namespace StarWing
             stars = new Star[50];
             for (int i = 0; i < stars.Length; i++)
             {
-                stars[i] = new Star(new Vector2D(-rnd.Next(1, 10), 0));
+                stars[i] = new Star(new Vector2D(0, -rnd.Next(1, 10)));
                 RandomSet(stars[i]);
             }
         }
@@ -44,8 +44,8 @@ namespace StarWing
         {
             foreach (var star in stars)
             {
-                star.Position += star.Direction*gameTime.SinceLastUpdate.Milliseconds*(float)0.1;
-                if (star.Position.X < 0)
+                star.Position += star.Direction*gameTime.SinceLastUpdate.Milliseconds*(float)0.05;
+                if (star.Position.Y < 0)
                 {
                     RandomSet(star);
                 }
@@ -56,7 +56,6 @@ namespace StarWing
         {
             star.Position = new Vector2D(GetRandomNumber(0,this.Width + 300),
                 GetRandomNumber(0, this.Height));
-            star.Color = Pens.Ivory;
         }
     }
 }
