@@ -28,7 +28,7 @@ namespace StarWing.GameState.PlayingState
             base(gameStateManager, game)
         {
             ModelCollection = gameObjectModelCollection;
-            Background = new OuterSpace();
+            Background = new OuterSpace(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
             HUD = new UILayer();
             PauseMenu = new UILayer();
