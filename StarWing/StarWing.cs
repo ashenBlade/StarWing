@@ -14,7 +14,7 @@ namespace StarWing
         public StarWing()
         {
             GameStateManager = new GameStateManager(this);
-            GameWindow.WindowSize = new Size(600, 1000);
+            GameWindow.WindowSize = new Size(600, 800);
             GameWindow.AutoSize = false;
             GameWindow.FormBorderStyle = FormBorderStyle.FixedSingle;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Windows.Forms;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
@@ -21,6 +22,7 @@ namespace StarWing.GameState.PlayingState
         private UILayer PauseMenu { get; }
 
         private bool _isPaused;
+        private bool _isGameOver;
 
         public PlayingState(GameStateManager gameStateManager, Game game, GameObjectModelCollection gameObjectModelCollection) :
             base(gameStateManager, game)
@@ -32,6 +34,7 @@ namespace StarWing.GameState.PlayingState
             PauseMenu = new UILayer();
             SetUpPauseMenu(PauseMenu);
             _isPaused = false;
+            _isGameOver = false;
         }
 
 
@@ -87,7 +90,7 @@ namespace StarWing.GameState.PlayingState
             var player = new Player(World)
                          {
                              Position = new Vector2D(400, 400),
-                             Bounds = new Size(100, 100),
+                             Bounds = playerModel.Sprite.Size,
                              CoolDown = TimeSpan.FromMilliseconds(500),
                              MaxCoolDown = TimeSpan.FromMilliseconds(500),
                              Damage = 10,
@@ -98,6 +101,21 @@ namespace StarWing.GameState.PlayingState
                              Velocity = playerModel.Velocity,
                              ProjectileFactory = playerModel.ProjectileFactory
                          };
+            player.Die += livable =>
+            {
+                _isGameOver = true;
+                var gameOverTextPosition = new Point(100, Game.GameWindow.Size.Width / 3);
+                var gameOverTextBounds = new Rectangle(gameOverTextPosition, Size.Empty);
+                var gameOverText = new UILabel()
+                                   {
+                                       Background = Color.Transparent,
+                                       Bounds = gameOverTextBounds,
+                                       Text = "Game over",
+                                       Font = new Font(FontFamily.GenericMonospace, 50),
+                                       FontColor = Color.White
+                                   };
+                PauseMenu.AddComponent(gameOverText);
+            };
             return player;
         }
 
@@ -108,7 +126,9 @@ namespace StarWing.GameState.PlayingState
             var buttonPadding = 10; // padding between buttons
 
             var resumeButtonPosition = new Point(gameWindowSize.Width / 2 - standardButtonSize.Width / 2,
-                                                 gameWindowSize.Height / 2 - standardButtonSize.Height / 2 - standardButtonSize.Height);
+                                                 gameWindowSize.Height / 2
+                                               - standardButtonSize.Height / 2
+                                               - standardButtonSize.Height);
             var resumeButtonBounds = new Rectangle( resumeButtonPosition, standardButtonSize);
             var resumeText = new UILabel()
                              {
@@ -154,7 +174,7 @@ namespace StarWing.GameState.PlayingState
                 _isPaused = !_isPaused;
             }
 
-            if (!_isPaused)
+            if (!_isPaused && !_isGameOver)
             {
                 Background.Update(gameTime);
                 World.Update(gameTime, input);
@@ -171,7 +191,7 @@ namespace StarWing.GameState.PlayingState
             Background.Render(graphics);
             World.Render(graphics);
             HUD.Render(graphics);
-            if (_isPaused)
+            if (_isPaused || _isGameOver)
             {
                 PauseMenu.Render(graphics);
             }

@@ -10,6 +10,7 @@ namespace StarWing.GameState
 {
     public class LoadingState : GameState
     {
+        private const int StandardShipDamage = 10;
         public LoadingState(GameStateManager gameStateManager, Game game) : base(gameStateManager, game) { }
         public override void LoadContent()
         {
@@ -25,7 +26,7 @@ namespace StarWing.GameState
         private ShipModel LoadPlayerShipModel(ProjectileFactory projectileFactory)
         {
             var sprite = new Sprite(Image.FromFile("Assets/player/ship2.png"));
-            var model = new ShipModel(sprite, 1.0f, 100, projectileFactory, TimeSpan.FromSeconds(4));
+            var model = new ShipModel(sprite, 1.0f, 100, projectileFactory, TimeSpan.FromSeconds(2), StandardShipDamage);
             return model;
         }
 
@@ -35,7 +36,11 @@ namespace StarWing.GameState
 
             // Velocity increaser
             var velocityIncreaserSprite = new Sprite(Image.FromFile("Assets/bonus/crys0.png"));
-            var velocityIncreaser = new PowerUpModel( velocityIncreaserSprite, player => player.Velocity *= 2, player => player.Velocity /= 2, (player, time) => { }, TimeSpan.FromSeconds(10));
+            var velocityIncreaser = new PowerUpModel( velocityIncreaserSprite,
+                                                      player => player.Velocity *= 2,
+                                                      player => player.Velocity /= 2,
+                                                      (player, time) => { },
+                                                      TimeSpan.FromSeconds(10));
             list.Add(velocityIncreaser);
 
             return list;
@@ -54,7 +59,7 @@ namespace StarWing.GameState
             var list = new List<ShipModel>();
             var image = Image.FromFile("Assets/enemies/kamikaze.png");
             var sprite = new Sprite(image);
-            var model = new ShipModel(sprite, 0.25f, 10, factory, TimeSpan.FromSeconds(2));
+            var model = new ShipModel(sprite, 0.25f, 10, factory, TimeSpan.FromSeconds(2), StandardShipDamage);
             list.Add(model);
             return list;
         }
