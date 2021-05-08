@@ -6,36 +6,23 @@ namespace StarWing
 {
     public class OuterSpace: IBackground
     {
-        private static OuterSpace _current;
 
-        public static int Height;
-        public static int Width;
+        public int Height;
+        public int Width;
+        
+        private Star[] stars;
+        
+        public Random rnd = new Random();
 
-        public OuterSpace(int height, int width)
-        {
-            Height = height;
-            Width = width;
-        }
-
-        public static void StartNew(OuterSpace outerSpace)
-        {
-            _current = outerSpace ?? throw new ArgumentNullException(nameof(outerSpace));
-        }
-        public static IBackground Current =>
-            _current;
-
-        private static Star[] stars;
-
-        public static Random rnd = new Random();
-
-        public static int GetRandomNumber(int min, int max)
+        public int GetRandomNumber(int min, int max)
         {
             return rnd.Next(min,max);
         }
-        public void Init(int height, int width)
+        
+        public OuterSpace()
         {
-            OuterSpace.Height = height;
-            OuterSpace.Width = width;
+            Height = Game.GameWindow.WindowSize.Height;
+            Width = Game.GameWindow.WindowSize.Width;
             stars = new Star[50];
             for (int i = 0; i < stars.Length; i++)
             {

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace StarWing
 {
-    public class Star 
+    public class Star
     {
         public void Render(Graphics graphics)
         {
@@ -19,13 +19,16 @@ namespace StarWing
                 RandomSet();
             }
         }
+        
 
         private int Height;
         private int Width;
         private Vector2D Position;
         private Vector2D Direction;
         private Pen Color;
-
+        private OuterSpace OuterSpace = new OuterSpace();
+        
+        
         public Star(Vector2D position, Vector2D direction, int size, Pen color)
         {
             Position = position;
@@ -45,7 +48,7 @@ namespace StarWing
 
         public void RandomSet()
         {
-            Position = new Vector2D(OuterSpace.GetRandomNumber(0, OuterSpace.Width + 300),
+            Position = new Vector2D(OuterSpace.GetRandomNumber(0,OuterSpace.Width + 300),
                 OuterSpace.GetRandomNumber(0, OuterSpace.Height));
             Color = Pens.Ivory;
         }
