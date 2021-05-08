@@ -31,7 +31,9 @@ namespace StarWing.GameObjects.Implementations
                             Bounds = model.Sprite.Size,
                             MaxHealth = model.Health,
                             MaxCoolDown = model.CoolDown,
-                            CoolDown = model.CoolDown
+                            CoolDown = model.CoolDown,
+                            IsVisible = true,
+                            Damage = model.Damage,
                         };
             return enemy;
         }

@@ -13,14 +13,6 @@ namespace StarWing.GameWorld
 {
     public class World : IWorld
     {
-        private static World _current;
-        public static void StartNew(World world)
-        {
-            _current = world ?? throw new ArgumentNullException(nameof(world));
-        }
-        public static IWorld Current =>
-            _current;
-
         private List<GameObject> _toAdd;
         private List<GameObject> _toRemove;
         private List<GameObject> _entities;

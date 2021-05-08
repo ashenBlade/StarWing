@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Resources;
+using System.Windows.Forms;
 using StarWing.Framework;
 using StarWing.GameState;
 
@@ -13,6 +14,9 @@ namespace StarWing
         public StarWing()
         {
             GameStateManager = new GameStateManager(this);
+            GameWindow.WindowSize = new Size(600, 800);
+            GameWindow.AutoSize = false;
+            GameWindow.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         protected override void OnStarting()

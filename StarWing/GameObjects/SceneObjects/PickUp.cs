@@ -11,9 +11,10 @@ namespace StarWing.GameObjects.SceneObjects
         public TimeSpan LifeTime { get; set; }
         public Item Item { get; set; }
 
-        public PickUp(IWorld world) : base(world)
+        public PickUp(IWorld world, Item item, TimeSpan lifeTime) : base(world)
         {
-
+            Item = item;
+            LifeTime = lifeTime;
         }
 
         public override void OnCollision(GameObject collider)
@@ -22,6 +23,7 @@ namespace StarWing.GameObjects.SceneObjects
             if (collider is Player player)
             {
                 Item.Apply(player);
+                World.RemoveGameObject(this);
             }
         }
 
@@ -29,6 +31,10 @@ namespace StarWing.GameObjects.SceneObjects
         {
             base.Update(gameTime, input);
             LifeTime -= gameTime.SinceLastUpdate;
+            if (LifeTime < TimeSpan.Zero)
+            {
+                World.RemoveGameObject(this);
+            }
         }
     }
 }
