@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
+using StarWing.Core.Interfaces;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
 using StarWing.GameObjects.Implementations;
@@ -30,9 +32,13 @@ namespace StarWing.GameState.PlayingState
             ModelCollection = gameObjectModelCollection;
             Background = new OuterSpace(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
             World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
+
             HUD = new UILayer();
+            SetUpHUD(HUD);
+
             PauseMenu = new UILayer();
             SetUpPauseMenu(PauseMenu);
+
             _isPaused = false;
             _isGameOver = false;
         }
@@ -55,7 +61,7 @@ namespace StarWing.GameState.PlayingState
 
             var player = GetPlayer(collection.PlayerModel);
             World.RegisterGameObject(player);
-            
+
         }
 
         private void InitializeManagers(GameObjectModelCollection collection)
@@ -115,7 +121,39 @@ namespace StarWing.GameState.PlayingState
                                    };
                 PauseMenu.AddComponent(gameOverText);
             };
+            player.HealthChanged += UpdateHudOnPlayerHealthChanged;
             return player;
+        }
+
+        private void UpdateHudOnPlayerHealthChanged(ILivable livable, int delta)
+        {
+            _hpBar.CurrentValue = livable.Health;
+            _hpBar.MaxValue = livable.MaxHealth;
+        }
+
+        private UIBar _hpBar;
+        private void SetUpHUD(UILayer hud)
+        {
+            var scoresLabelPosition = new Vector2D(10, 10);
+            var scoresLabel = new UILabel()
+                              {
+                                  Text = $"Scores: 0",
+                                  FontColor = Color.White,
+                                  Background = Color.Transparent,
+                                  Bounds = new Rectangle(scoresLabelPosition, Size.Empty),
+                                  Font = new Font(FontFamily.GenericMonospace, 12),
+                              };
+            hud.AddComponent(scoresLabel);
+
+            var hpBarPosition = new Vector2D(scoresLabelPosition.X, scoresLabelPosition.Y + scoresLabel.Bounds.Height + 30);
+            _hpBar = new UIBar(100, 100, Color.Red)
+                     {
+                         Position = hpBarPosition,
+                         Background = Color.Transparent,
+                         Bounds = new Rectangle(hpBarPosition, new Size(150, 15))
+
+                     };
+            hud.AddComponent(_hpBar);
         }
 
         private void SetUpPauseMenu(UILayer menu)
@@ -146,9 +184,9 @@ namespace StarWing.GameState.PlayingState
             menu.AddComponent(resumeButton);
 
             var exitButtonPosition = new Point(gameWindowSize.Width / 2 - standardButtonSize.Width / 2,
-                                                 gameWindowSize.Height / 2
-                                               - standardButtonSize.Height / 2
-                                               + buttonPadding);
+                                               gameWindowSize.Height / 2
+                                             - standardButtonSize.Height / 2
+                                             + buttonPadding);
             var exitButtonBounds = new Rectangle( exitButtonPosition, standardButtonSize);
             var exitText = new UILabel()
                            {

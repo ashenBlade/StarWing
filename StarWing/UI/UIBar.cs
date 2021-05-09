@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -16,6 +17,17 @@ namespace StarWing.UI
             MaxValue = maxValue;
             CurrentValue = startValue;
             BarColor = barColor;
+        }
+
+        public override void Render(Graphics graphics)
+        {
+            base.Render(graphics);
+
+            graphics.DrawRectangle(new Pen(BarColor), Bounds);
+
+            var currentValueRectWidth = ( float ) Bounds.Width * ( CurrentValue / MaxValue );
+            var currentValueRectangle = new Rectangle(Position, new Size((int)currentValueRectWidth, Bounds.Height));
+            graphics.FillRectangle(new SolidBrush(BarColor), currentValueRectangle);
         }
     }
 }
