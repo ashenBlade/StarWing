@@ -34,14 +34,19 @@ namespace StarWing.GameState
         {
             var list = new List<PowerUpModel>();
 
-            // Velocity increaser
-            var velocityIncreaserSprite = new Sprite(Image.FromFile("Assets/bonus/crys0.png"));
-            var velocityIncreaser = new PowerUpModel( velocityIncreaserSprite,
-                                                      player => player.Velocity *= 2,
-                                                      player => player.Velocity /= 2,
-                                                      (player, time) => { },
-                                                      TimeSpan.FromSeconds(10));
+            var powerUpModelSize = new Size(30, 30);
+
+            var velocityIncreaserSprite = new Sprite(Image.FromFile("Assets/bonus/crys0.png"), powerUpModelSize);
+            var velocityIncreaser = new VelocityIncreaserModel(TimeSpan.FromSeconds(5), 2, velocityIncreaserSprite);
             list.Add(velocityIncreaser);
+
+            var medicineSprite = new Sprite(Image.FromFile("Assets/bonus/metal-plate-medicine.png"), powerUpModelSize);
+            var medicine = new MedicineModel(medicineSprite, 10);
+            list.Add(medicine);
+
+            var weaponEnhancerSprite = new Sprite(Image.FromFile("Assets/bonus/sand-clock.png"), powerUpModelSize);
+            var enhancer = new WeaponCoolDownEnhancerModel(TimeSpan.FromSeconds(10), 2, weaponEnhancerSprite);
+            list.Add(enhancer);
 
             return list;
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using StarWing.Framework;
 using StarWing.GameObjects.Implementations;
-using StarWing.GameObjects.Items;
 
 namespace StarWing.GameObjectModel
 {

@@ -22,7 +22,7 @@ namespace StarWing.GameObjects.Manager
 
         private TimeSpan GetNextSpawnTime(TimeSpan minSpawnTime)
         {
-            return minSpawnTime + TimeSpan.FromSeconds(( new Random() ).Next(0, 120));
+            return minSpawnTime + TimeSpan.FromSeconds(( new Random() ).Next(0, 30));
         }
 
         public override void Initialize(IWorld world)

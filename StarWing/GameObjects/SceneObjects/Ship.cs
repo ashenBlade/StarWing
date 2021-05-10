@@ -18,7 +18,7 @@ namespace StarWing.GameObjects.SceneObjects
             get => _health;
             set
             {
-                if (value == _health)
+                if (value == _health || MaxHealth < value)
                     return;
                 var delta = _health - value;
                 _health = value;
