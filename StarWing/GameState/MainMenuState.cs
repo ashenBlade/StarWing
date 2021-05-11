@@ -21,17 +21,23 @@ namespace StarWing.GameState
         {
             _menu = new UIMenu();
             var font = new Font(FontFamily.GenericMonospace, 12);
-            var playButtonPosition = new Rectangle(100, 100, 100, 50);
-            var playButtonText = new UILabel() { Font = font, Position = playButtonPosition.Location, Text = "Play"};
-            var exitButtonPosition = new Rectangle(100, 200, 100, 50);
-            var exitButtonText = new UILabel() { Font = font, Position = exitButtonPosition.Location, Text = "Exit"};
-            var playButton = new UIButton() { Bounds = playButtonPosition, Content = playButtonText, Background = Color.White};
+            var standardButtonSize = new Size(100, 50);
+            var buttonPadding = 10;
+
+            var playButtonPosition = new Vector2D(Game.GameWindow.Width / 2 - standardButtonSize.Width / 2, 100);
+            var playButtonBounds = new Rectangle(playButtonPosition,standardButtonSize);
+            var playButtonText = new UILabel() { Font = font, Position = playButtonBounds.Location, Text = "Play"};
+            var playButton = new UIButton() { Bounds = playButtonBounds, Content = playButtonText, Background = Color.White};
             playButton.Click += () => GameStateManager.Load(new PlayingState.PlayingState(GameStateManager, Game,
                                                                                           _gameObjectModelCollection));
-
-            var exitButton = new UIButton() { Bounds = exitButtonPosition, Content = exitButtonText, Background = Color.White};
-            exitButton.Click += () => Game.Exit();
             _menu.AddButton(playButton);
+
+            var exitButtonPosition = new Vector2D(playButtonPosition.X,
+                                                  playButtonPosition.Y + standardButtonSize.Height + buttonPadding);
+            var exitButtonBounds = new Rectangle(exitButtonPosition, standardButtonSize);
+            var exitButtonText = new UILabel() { Font = font, Position = exitButtonBounds.Location, Text = "Exit"};
+            var exitButton = new UIButton() { Bounds = exitButtonBounds, Content = exitButtonText, Background = Color.White};
+            exitButton.Click += () => Game.Exit();
             _menu.AddButton(exitButton);
         }
 
