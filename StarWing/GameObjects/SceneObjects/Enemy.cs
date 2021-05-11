@@ -11,7 +11,7 @@ namespace StarWing.GameObjects.SceneObjects
         public override void Update(GameTime gameTime, Input input)
         {
             base.Update(gameTime, input);
-            Position += Direction * Velocity;
+            Position += Direction * Velocity * (float) gameTime.SinceLastUpdate.TotalMilliseconds / 2;
             Shoot(Direction);
         }
     }

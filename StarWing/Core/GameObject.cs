@@ -23,17 +23,17 @@ namespace StarWing
                 _position = value;
             }
         }
-        private Size _bounds;
-        public Size Bounds
+        private SizeF _bounds;
+        public SizeF Bounds
         {
             get => _bounds;
             set
             {
                 _bounds = value;
             } }
-        public Rectangle BoundingBox
+        public RectangleF BoundingBox
         {
-            get => new Rectangle(_position, _bounds);
+            get => new RectangleF(_position, _bounds);
             set
             {
                 _position = value.Location;

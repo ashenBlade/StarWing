@@ -123,6 +123,11 @@ namespace StarWing.Framework
             return new Point(( int ) vector.X, ( int ) vector.Y);
         }
 
+        public static implicit operator Vector2D(PointF point)
+        {
+            return new Vector2D(point.X, point.Y);
+        }
+
         #endregion Casting operators
 
         #endregion Overloading operators

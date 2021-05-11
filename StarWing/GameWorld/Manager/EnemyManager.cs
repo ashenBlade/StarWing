@@ -100,7 +100,7 @@ namespace StarWing.GameObjects.Manager
         {
             var worldPosition = World.Bounds;
             var random = new Random();
-            var positionX = random.Next(0, worldPosition.Width - enemy.Bounds.Width);
+            var positionX = random.Next(0, (int) (worldPosition.Width - enemy.Bounds.Width));
             var positionY = worldPosition.Y - enemy.Bounds.Height;
             enemy.Position = new Vector2D(positionX, positionY);
             return enemy;

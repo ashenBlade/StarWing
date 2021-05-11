@@ -6,8 +6,8 @@ namespace StarWing.Core.Interfaces
 {
     public interface ICollidable
     {
-        Size Bounds { get; set; }
-        Rectangle BoundingBox { get; set; }
+        SizeF Bounds { get; set; }
+        RectangleF BoundingBox { get; set; }
         void OnCollision(GameObject collider);
     }
 }

@@ -48,8 +48,8 @@ namespace StarWing.GameObjects.Manager
         private Vector2D GetPickUpRandomPosition()
         {
             var rand = new Random();
-            var x = rand.Next(World.Bounds.Left, World.Bounds.Right);
-            var y = rand.Next(World.Bounds.Top, World.Bounds.Bottom);
+            var x = rand.Next((int)World.Bounds.Left, (int)World.Bounds.Right);
+            var y = rand.Next((int)World.Bounds.Top, (int)World.Bounds.Bottom);
             return new Vector2D(x, y);
         }
     }

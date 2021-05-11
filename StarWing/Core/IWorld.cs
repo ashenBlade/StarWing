@@ -14,6 +14,6 @@ namespace StarWing.Core
         event Action<GameObject> GameObjectAdded;
         event Action<GameObject> GameObjectRemoved;
         IReadOnlyCollection<GameObject> AllGameObjects { get; }
-        Rectangle Bounds { get; }
+        RectangleF Bounds { get; }
     }
 }

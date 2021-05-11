@@ -23,7 +23,7 @@ namespace StarWing.GameWorld
         public IReadOnlyCollection<GameObject> AllGameObjects =>
             _entities;
 
-        public Rectangle Bounds { get; }
+        public RectangleF Bounds { get; }
 
         public World(Rectangle bounds, IEventManager eventManager)
         {
