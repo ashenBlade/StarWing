@@ -86,7 +86,7 @@ namespace StarWing.GameState.PlayingState
         private EnemyManager GetEnemyManager(IEnumerable<ShipModel> shipModels)
         {
             var factory = new EnemyFactory(shipModels, World);
-            var enemyManager = new EnemyManager(factory, 10, TimeSpan.FromSeconds(1));
+            var enemyManager = new EnemyManager(factory, 10, TimeSpan.FromSeconds(3));
             return enemyManager;
         }
 

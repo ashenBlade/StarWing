@@ -12,6 +12,7 @@ namespace StarWing.GameObjects.SceneObjects
     {
         public const int StandardMaxHealth = 100;
 
+
         private int _health;
         public int Health
         {
@@ -22,11 +23,11 @@ namespace StarWing.GameObjects.SceneObjects
                     return;
                 var delta = _health - value;
                 _health = value;
-                HealthChanged?.Invoke(this, delta);
+                OnHealthChanged(this, delta);
 
                 if (Health <= 0)
                 {
-                    Die?.Invoke(this);
+                    OnDie(this);
                 }
             }
         }
@@ -42,7 +43,7 @@ namespace StarWing.GameObjects.SceneObjects
                     return;
                 var delta = _maxHealth - value;
                 _maxHealth = value;
-                MaxHealthChanged?.Invoke(this, delta);
+                OnMaxHealthChanged(this, delta);
             }
         }
 
@@ -106,6 +107,12 @@ namespace StarWing.GameObjects.SceneObjects
         public event ILivable.HealthChangedDelegate MaxHealthChanged;
         public event ILivable.HealthChangedDelegate HealthChanged;
         public event ILivable.LivableDiedDelegate Die;
+
+        protected virtual void OnDie(ILivable livable)
+        {
+            Die?.Invoke(livable);
+        }
+
         public int Damage { get; set; }
         public TimeSpan CoolDown { get; set; }
         public TimeSpan MaxCoolDown { get; set; }
@@ -116,6 +123,16 @@ namespace StarWing.GameObjects.SceneObjects
             var projectile = ProjectileFactory.Create(World,this, Damage, direction);
             World.RegisterGameObject(projectile);
             CoolDown += MaxCoolDown;
+        }
+
+        protected virtual void OnHealthChanged(ILivable livable, int delta)
+        {
+            HealthChanged?.Invoke(livable, delta);
+        }
+
+        protected virtual void OnMaxHealthChanged(ILivable livable, int delta)
+        {
+            MaxHealthChanged?.Invoke(livable, delta);
         }
     }
 }

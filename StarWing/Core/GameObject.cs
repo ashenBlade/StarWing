@@ -23,6 +23,7 @@ namespace StarWing
                 _position = value;
             }
         }
+
         private SizeF _bounds;
         public SizeF Bounds
         {
@@ -31,6 +32,7 @@ namespace StarWing
             {
                 _bounds = value;
             } }
+
         public RectangleF BoundingBox
         {
             get => new RectangleF(_position, _bounds);

@@ -11,6 +11,15 @@ namespace StarWing.GameObjects.SceneObjects
         public Player(IWorld world): base(world)
         { }
 
+        public override void OnCollision(GameObject collider)
+        {
+            base.OnCollision(collider);
+            if (collider is Ship)
+            {
+                Health -= 20;
+            }
+        }
+
         public override void Update(GameTime gameTime, Input input)
         {
             base.Update(gameTime, input);

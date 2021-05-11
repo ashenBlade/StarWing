@@ -74,12 +74,13 @@ namespace StarWing.GameObjects.Manager
             foreach (var enemy in _enemies.Where(IsOutOfGameBounds))
             {
                 World.RemoveGameObject(enemy);
+                _availableEnemies.Enqueue(enemy);
             }
         }
 
         private bool IsOutOfGameBounds(Enemy enemy)
         {
-            return World.Bounds.Bottom < enemy.Position.Y;
+            return World.Bounds.Bottom < enemy.BoundingBox.Top;
         }
 
         private Enemy GetEnemy()
