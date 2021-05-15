@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using StarWing.Core.Interfaces;
+using StarWing.ECS;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
 using StarWing.GameObjects.Implementations;
@@ -31,7 +32,7 @@ namespace StarWing.GameState.PlayingState
         {
             ModelCollection = gameObjectModelCollection;
             Background = new OuterSpace(Game.GameWindow.Size.Height, Game.GameWindow.Size.Width);
-            World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), null);
+            World = new World(new Rectangle(Point.Empty, Game.GameWindow.Size), new EmptyEventManager());
 
             HUD = new UILayer();
             SetUpHUD(HUD);

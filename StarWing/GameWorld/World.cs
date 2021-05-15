@@ -28,7 +28,7 @@ namespace StarWing.GameWorld
         public World(Rectangle bounds, IEventManager eventManager)
         {
             Bounds = bounds;
-            // EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
+            EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
             _toAdd = new List<GameObject>();
             _toRemove = new List<GameObject>();
             _entities = new List<GameObject>();

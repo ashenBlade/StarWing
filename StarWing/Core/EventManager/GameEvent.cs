@@ -1,6 +1,6 @@
 ﻿namespace StarWing.ECS
 {
-    public interface IEventManager
+    public class GameEvent
     {
         
     }
