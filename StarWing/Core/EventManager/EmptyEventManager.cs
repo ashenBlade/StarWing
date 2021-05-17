@@ -1,4 +1,4 @@
-﻿namespace StarWing.ECS
+﻿namespace StarWing.Core.EventManager
 {
     public class EmptyEventManager : IEventManager
     {
