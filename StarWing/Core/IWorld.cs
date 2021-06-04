@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using StarWing.ECS;
+using StarWing.Core.EventManager;
 using StarWing.GameObjects.SceneObjects;
 
 namespace StarWing.Core

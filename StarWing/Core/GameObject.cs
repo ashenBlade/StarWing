@@ -2,7 +2,6 @@
 using System.Drawing;
 using StarWing.Core;
 using StarWing.Core.Interfaces;
-using StarWing.ECS;
 using StarWing.Framework;
 using IRenderable = StarWing.Core.Interfaces.IRenderable;
 

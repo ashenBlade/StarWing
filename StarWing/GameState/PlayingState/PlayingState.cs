@@ -5,12 +5,12 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using StarWing.Core.Interfaces;
-using StarWing.ECS;
 using StarWing.Framework;
 using StarWing.GameObjectModel;
 using StarWing.GameObjects.Implementations;
 using StarWing.GameObjects.Manager;
 using StarWing.GameObjects.SceneObjects;
+using StarWing.Core.EventManager;
 using StarWing.GameWorld;
 using StarWing.UI;
 

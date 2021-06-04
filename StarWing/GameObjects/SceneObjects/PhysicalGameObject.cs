@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using StarWing.Core;
 using StarWing.Core.Interfaces;
-using StarWing.ECS;
 using StarWing.Framework;
 
 namespace StarWing.GameObjects.SceneObjects

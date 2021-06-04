@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using StarWing.Core;
-using StarWing.ECS;
+using StarWing.Core.EventManager;
 using StarWing.Framework;
 using StarWing.GameObjects.Items;
 using StarWing.GameObjects.Manager;

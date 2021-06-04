@@ -1,5 +1,4 @@
-﻿using StarWing.ECS;
-using StarWing.Framework;
+﻿using StarWing.Framework;
 using StarWing.GameObjects.SceneObjects;
 
 namespace StarWing.GameObjects.Items

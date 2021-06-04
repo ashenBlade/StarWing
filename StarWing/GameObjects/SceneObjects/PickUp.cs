@@ -1,6 +1,5 @@
 ﻿using System;
 using StarWing.Core;
-using StarWing.ECS;
 using StarWing.Framework;
 using StarWing.GameObjects.Items;
 
